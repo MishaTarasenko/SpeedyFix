@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OperationOrderEntity {
+public class OperationOrderEntity implements OperationOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,4 +28,24 @@ public class OperationOrderEntity {
 
     @OneToOne
     private EmployeeEntity employee;
+
+    @Override
+    public String printVehicle() {
+        return null;
+    }
+
+    @Override
+    public String printCustomer() {
+        return null;
+    }
+
+    @Override
+    public String printEmployee() {
+        return null;
+    }
+
+    @Override
+    public String printOperation() {
+        return null;
+    }
 }
