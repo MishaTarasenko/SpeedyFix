@@ -1,0 +1,4 @@
+package ukma.speedyfix.service.vehicle;
+
+public class VehicleValidator {
+}
