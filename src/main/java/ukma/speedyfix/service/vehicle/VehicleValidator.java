@@ -1,4 +1,9 @@
 package ukma.speedyfix.service.vehicle;
 
-public class VehicleValidator {
+import org.springframework.stereotype.Component;
+import ukma.speedyfix.domain.entity.VehicleEntity;
+import ukma.speedyfix.service.BaseValidator;
+
+@Component
+public class VehicleValidator extends BaseValidator<VehicleEntity> {
 }
