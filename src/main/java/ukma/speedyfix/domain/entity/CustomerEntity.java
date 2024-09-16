@@ -30,6 +30,11 @@ public class CustomerEntity implements Customer {
 
     @Override
     public String printListOfVehicles() {
-        return null;
+        StringBuilder sb = new StringBuilder();
+        sb.append("User with id "+id+": ");
+        for (VehicleEntity vehicle : vehicles) {
+            sb.append(vehicle.toString());
+        }
+        return sb.toString();
     }
 }

@@ -31,21 +31,21 @@ public class OperationOrderEntity implements OperationOrder {
 
     @Override
     public String printVehicle() {
-        return null;
+        return "This order is for " + vehicle.toString();
     }
 
     @Override
     public String printCustomer() {
-        return null;
+        return "This is order of " + customer.toString();
     }
 
     @Override
     public String printEmployee() {
-        return null;
+        return "This order will be done by " + employee.toString();
     }
 
     @Override
     public String printOperation() {
-        return null;
+        return "This order contains " + operation.toString();
     }
 }

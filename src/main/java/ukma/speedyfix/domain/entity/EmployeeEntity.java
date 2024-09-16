@@ -36,6 +36,6 @@ public class EmployeeEntity implements Employee {
 
     @Override
     public String printUser() {
-        return null;
+        return "This employee is User"+user.toString();
     }
 }
