@@ -15,7 +15,7 @@ import ukma.speedyfix.domain.type.EmployeeType;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmployeeEntity {
+public class EmployeeEntity implements Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,4 +33,9 @@ public class EmployeeEntity {
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity user;
+
+    @Override
+    public String printUser() {
+        return null;
+    }
 }
