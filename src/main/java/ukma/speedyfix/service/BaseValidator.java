@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.Set;
 
 
-public abstract class BaseValidator<E> implements IValidator<E> {
+public abstract class BaseValidator<E> implements MyValidator<E> {
 
     private Validator validator;
 

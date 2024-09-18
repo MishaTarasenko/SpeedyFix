@@ -3,7 +3,7 @@ package ukma.speedyfix.service;
 import java.util.List;
 import java.util.Map;
 
-public interface IService<E, I> {
+public interface MyService<E, I> {
 
     E getById(I id);
 

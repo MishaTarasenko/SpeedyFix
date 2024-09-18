@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CustomerEntity implements Customer {
+public class CustomerEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,14 +27,4 @@ public class CustomerEntity implements Customer {
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity user;
-
-    @Override
-    public String printListOfVehicles() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("User with id "+id+": ");
-        for (VehicleEntity vehicle : vehicles) {
-            sb.append(vehicle.toString());
-        }
-        return sb.toString();
-    }
 }

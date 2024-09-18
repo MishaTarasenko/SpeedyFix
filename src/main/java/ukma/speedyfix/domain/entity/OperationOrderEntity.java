@@ -1,21 +1,35 @@
 package ukma.speedyfix.domain.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ukma.speedyfix.domain.type.OperationOrderStatusType;
+
+import java.time.LocalDate;
 
 @Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OperationOrderEntity implements OperationOrder {
+public class OperationOrderEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private OperationOrderStatusType orderStatus;
+
+    @NotNull
+    private LocalDate startDate;
+
+    private LocalDate endDate;
 
     @OneToOne
     private OperationEntity operation;
@@ -28,24 +42,4 @@ public class OperationOrderEntity implements OperationOrder {
 
     @OneToOne
     private EmployeeEntity employee;
-
-    @Override
-    public String printVehicle() {
-        return "This order is for " + vehicle.toString();
-    }
-
-    @Override
-    public String printCustomer() {
-        return "This is order of " + customer.toString();
-    }
-
-    @Override
-    public String printEmployee() {
-        return "This order will be done by " + employee.toString();
-    }
-
-    @Override
-    public String printOperation() {
-        return "This order contains " + operation.toString();
-    }
 }

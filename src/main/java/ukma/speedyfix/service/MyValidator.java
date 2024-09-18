@@ -1,6 +1,6 @@
 package ukma.speedyfix.service;
 
-public interface IValidator<E> {
+public interface MyValidator<E> {
 
     void validForCreate(E entity);
 

@@ -2,12 +2,48 @@ package ukma.speedyfix.service.vehicle;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ukma.speedyfix.domain.entity.UserEntity;
 import ukma.speedyfix.domain.entity.VehicleEntity;
-import ukma.speedyfix.service.IValidator;
+import ukma.speedyfix.service.MyService;
+import ukma.speedyfix.service.MyValidator;
+import ukma.speedyfix.service.user.MyAuthService;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
-public class VehicleService {
+public class VehicleService implements MyService<VehicleEntity, Integer> {
+
+    private MyValidator<VehicleEntity> validator;
 
     @Autowired
-    public VehicleService(IValidator<VehicleEntity> validator) {}
+    public VehicleService(MyValidator<VehicleEntity> validator) {
+        this.validator = validator;
+    }
+
+    @Override
+    public VehicleEntity getById(Integer id) {
+        return null;
+    }
+
+    @Override
+    public List<VehicleEntity> getList(Map<String, Object> criteria) {
+        return List.of();
+    }
+
+    @Override
+    public Integer create(VehicleEntity view) {
+        return 0;
+    }
+
+    @Override
+    public boolean update(VehicleEntity view) {
+        return false;
+    }
+
+    @Override
+    public boolean delete(Integer id) {
+        return false;
+    }
 }
