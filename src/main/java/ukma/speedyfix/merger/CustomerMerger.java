@@ -15,9 +15,6 @@ public class CustomerMerger {
     private final UserRepository repository;
 
     public void merge(CustomerEntity entity, CustomerView view) {
-        if (view.getId() != null) {
-            entity.setId(view.getId());
-        }
         if (view.getUserId() != null) {
             entity.setUser(repository.findById(view.getUserId()).orElseThrow(() -> new NoSuchElementException("User with id: " + view.getUserId() + " not found")));
         }

@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ukma.speedyfix.domain.entity.CustomerEntity;
+import ukma.speedyfix.domain.view.CustomerView;
 import ukma.speedyfix.merger.CustomerMerger;
 import ukma.speedyfix.repositories.CustomerRepository;
 import ukma.speedyfix.service.MyService;
@@ -32,16 +33,27 @@ public class CustomerService implements MyService<CustomerEntity, CustomerView, 
 
     @Override
     public Integer create(CustomerView view) {
-        return 0;
+        CustomerEntity entity = new CustomerEntity();
+        merger.merge(entity, view);
+        validator.validForCreate(entity);
+        entity = repository.saveAndFlush(entity);
+        return entity.getId();
     }
 
     @Override
     public boolean update(CustomerView view) {
-        return false;
+        CustomerEntity entity = getById(view.getId());
+        merger.merge(entity, view);
+        validator.validForUpdate(entity);
+        repository.saveAndFlush(entity);
+        return true;
     }
 
     @Override
     public boolean delete(Integer id) {
-        return false;
+        CustomerEntity entity = getById(id);
+        validator.validForDelete(entity);
+        repository.delete(entity);
+        return true;
     }
 }
