@@ -1,9 +1,12 @@
 package ukma.speedyfix.service.customer;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ukma.speedyfix.domain.entity.CustomerEntity;
 import ukma.speedyfix.domain.view.CustomerView;
+import ukma.speedyfix.merger.CustomerMerger;
+import ukma.speedyfix.repositories.CustomerRepository;
 import ukma.speedyfix.service.MyService;
 import ukma.speedyfix.service.MyValidator;
 
@@ -11,33 +14,46 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class CustomerService implements MyService<CustomerEntity, CustomerView, Integer> {
 
-    @Autowired
-    private MyValidator<CustomerEntity> validator;
+    private final MyValidator<CustomerEntity> validator;
+    private final CustomerRepository repository;
+    private final CustomerMerger merger;
 
     @Override
     public CustomerEntity getById(Integer id) {
-        return null;
+        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Customer with id: " + id + " not found"));
     }
 
     @Override
     public List<CustomerEntity> getList(Map<String, Object> criteria) {
-        return List.of();
+        return repository.findAll();
     }
 
     @Override
     public Integer create(CustomerView view) {
-        return 0;
+        CustomerEntity entity = new CustomerEntity();
+        merger.merge(entity, view);
+        validator.validForCreate(entity);
+        entity = repository.saveAndFlush(entity);
+        return entity.getId();
     }
 
     @Override
     public boolean update(CustomerView view) {
-        return false;
+        CustomerEntity entity = getById(view.getId());
+        merger.merge(entity, view);
+        validator.validForUpdate(entity);
+        repository.saveAndFlush(entity);
+        return true;
     }
 
     @Override
     public boolean delete(Integer id) {
-        return false;
+        CustomerEntity entity = getById(id);
+        validator.validForDelete(entity);
+        repository.delete(entity);
+        return true;
     }
 }
