@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class CustomerService implements MyService<CustomerEntity, Integer> {
+public class CustomerService implements MyService<CustomerEntity, CustomerView, Integer> {
 
     private final MyValidator<CustomerEntity> validator;
     private final CustomerRepository repository;
@@ -31,12 +31,12 @@ public class CustomerService implements MyService<CustomerEntity, Integer> {
     }
 
     @Override
-    public Integer create(CustomerEntity view) {
+    public Integer create(CustomerView view) {
         return 0;
     }
 
     @Override
-    public boolean update(CustomerEntity view) {
+    public boolean update(CustomerView view) {
         return false;
     }
 

@@ -17,29 +17,25 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserService implements MyService<UserEntity, Integer>, MyAuthService<UserEntity> {
+public class UserService implements MyAuthService<UserEntity> {
 
     private final MyValidator<UserEntity> validator;
     private final UserRepository repository;
     private final UserMerger merger;
 
-    @Override
     public UserEntity getById(Integer id) {
         return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("User with id: " + id + " not found"));
     }
 
-    @Override
     public List<UserEntity> getList(Map<String, Object> criteria) {
         return repository.findAll();
     }
 
-    @Override
     public Integer create(UserEntity view) {
         view = repository.saveAndFlush(view);
         return view.getId();
     }
 
-    @Override
     public boolean update(UserEntity view) {
         UserEntity entity = getById(view.getId());
         merger.merge(entity, view);
@@ -48,7 +44,6 @@ public class UserService implements MyService<UserEntity, Integer>, MyAuthServic
         return true;
     }
 
-    @Override
     public boolean delete(Integer id) {
         UserEntity entity = getById(id);
         validator.validForDelete(entity);

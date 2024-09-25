@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ukma.speedyfix.domain.entity.UserEntity;
 import ukma.speedyfix.domain.entity.VehicleEntity;
+import ukma.speedyfix.domain.view.VehicleView;
 import ukma.speedyfix.service.MyService;
 import ukma.speedyfix.service.MyValidator;
 import ukma.speedyfix.service.user.MyAuthService;
@@ -13,7 +14,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class VehicleService implements MyService<VehicleEntity, Integer> {
+public class VehicleService implements MyService<VehicleEntity, VehicleView,  Integer> {
 
     private MyValidator<VehicleEntity> validator;
 
@@ -33,12 +34,12 @@ public class VehicleService implements MyService<VehicleEntity, Integer> {
     }
 
     @Override
-    public Integer create(VehicleEntity view) {
+    public Integer create(VehicleView view) {
         return 0;
     }
 
     @Override
-    public boolean update(VehicleEntity view) {
+    public boolean update(VehicleView view) {
         return false;
     }
 
