@@ -3,6 +3,7 @@ package ukma.speedyfix.service.operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ukma.speedyfix.domain.entity.OperationEntity;
+import ukma.speedyfix.domain.view.OperationView;
 import ukma.speedyfix.service.MyService;
 import ukma.speedyfix.service.MyValidator;
 
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class OperationService implements MyService<OperationEntity, Integer>, MyOperationService {
+public class OperationService implements MyService<OperationEntity, OperationView, Integer>, MyOperationService {
 
     private final MyValidator<OperationEntity> validator;
 
@@ -30,12 +31,12 @@ public class OperationService implements MyService<OperationEntity, Integer>, My
     }
 
     @Override
-    public Integer create(OperationEntity view) {
+    public Integer create(OperationView view) {
         return 0;
     }
 
     @Override
-    public boolean update(OperationEntity view) {
+    public boolean update(OperationView view) {
         return false;
     }
 
