@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ukma.speedyfix.domain.entity.VehicleEntity;
+import ukma.speedyfix.domain.response.VehicleResponse;
 import ukma.speedyfix.domain.view.VehicleView;
 import ukma.speedyfix.service.vehicle.VehicleService;
 
@@ -37,13 +38,17 @@ public class VehicleController {
     }
 
     @GetMapping
-    public ResponseEntity<List<VehicleEntity>> findAll() {
-        return ResponseEntity.ok(vehicleService.getList(null));
+    public ResponseEntity<List<VehicleResponse>> findAll() {
+        return ResponseEntity.ok(vehicleService.getListResponse());
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<VehicleEntity> findById(@PathVariable("id") Integer id) {
-        return ResponseEntity.ok(vehicleService.getById(id));
+    public ResponseEntity<VehicleResponse> findById(@PathVariable("id") Integer id) {
+        return ResponseEntity.ok(vehicleService.getResponseById(id));
     }
 
+    @GetMapping(path = "/owner/{id}")
+    public ResponseEntity<VehicleResponse> findByOwner(@PathVariable("id") Integer id) {
+        return ResponseEntity.ok(vehicleService.getResponseById(id));
+    }
 }

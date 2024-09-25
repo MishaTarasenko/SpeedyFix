@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ukma.speedyfix.domain.entity.CustomerEntity;
+import ukma.speedyfix.domain.response.CustomerResponse;
 import ukma.speedyfix.domain.view.CustomerView;
 import ukma.speedyfix.service.customer.CustomerService;
 
@@ -26,13 +27,13 @@ public class CustomerController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CustomerEntity>> findAll() {
-        return ResponseEntity.ok(customerService.getList(null));
+    public ResponseEntity<List<CustomerResponse>> findAll() {
+        return ResponseEntity.ok(customerService.getListResponse(null));
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<CustomerEntity> findById(@PathVariable("id") Integer id) {
-        return ResponseEntity.ok(customerService.getById(id));
+    public ResponseEntity<CustomerResponse> findById(@PathVariable("id") Integer id) {
+        return ResponseEntity.ok(customerService.getResponseById(id));
     }
 
     @PutMapping

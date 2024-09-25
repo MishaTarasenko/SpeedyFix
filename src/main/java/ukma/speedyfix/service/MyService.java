@@ -1,5 +1,7 @@
 package ukma.speedyfix.service;
 
+import ukma.speedyfix.domain.response.CustomerResponse;
+
 import java.util.List;
 import java.util.Map;
 
