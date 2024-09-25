@@ -1,8 +1,13 @@
 package ukma.speedyfix.service.user;
 
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import ukma.speedyfix.domain.entity.UserEntity;
+import ukma.speedyfix.merger.UserMerger;
+import ukma.speedyfix.repositories.UserRepository;
 import ukma.speedyfix.service.MyService;
 import ukma.speedyfix.service.MyValidator;
 
@@ -11,42 +16,48 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserService implements MyService<UserEntity, Integer>, MyAuthService<UserEntity> {
 
     private final MyValidator<UserEntity> validator;
-
-    @Autowired
-    public UserService(MyValidator<UserEntity> validator) {
-        this.validator = validator;
-    }
+    private final UserRepository repository;
+    private final UserMerger merger;
 
     @Override
     public UserEntity getById(Integer id) {
-        return null;
+        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("User with id: " + id + " not found"));
     }
 
     @Override
     public List<UserEntity> getList(Map<String, Object> criteria) {
-        return List.of();
+        return repository.findAll();
     }
 
     @Override
     public Integer create(UserEntity view) {
-        return 0;
+        view = repository.saveAndFlush(view);
+        return view.getId();
     }
 
     @Override
     public boolean update(UserEntity view) {
-        return false;
+        UserEntity entity = getById(view.getId());
+        merger.merge(entity, view);
+        validator.validForUpdate(entity);
+        repository.saveAndFlush(entity);
+        return true;
     }
 
     @Override
     public boolean delete(Integer id) {
-        return false;
+        UserEntity entity = getById(id);
+        validator.validForDelete(entity);
+        repository.delete(entity);
+        return true;
     }
 
     @Override
     public Optional<UserEntity> findByEmail(String userEmail) {
-        return Optional.empty();
+        return repository.findByEmail(userEmail);
     }
 }

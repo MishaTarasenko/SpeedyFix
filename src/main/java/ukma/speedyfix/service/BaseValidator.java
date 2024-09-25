@@ -1,5 +1,6 @@
 package ukma.speedyfix.service;
 
+import jakarta.persistence.Persistence;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ValidationException;
 import jakarta.validation.Validator;
@@ -13,12 +14,17 @@ import java.util.Set;
 public abstract class BaseValidator<E> implements MyValidator<E> {
 
     private Validator validator;
+    private final Class<E> persistentClass;
+
+    public BaseValidator(Class<E> persistentClass) {
+        this.persistentClass = persistentClass;
+    }
 
     @Override
     public void validForCreate(E entity) {
         Set<ConstraintViolation<E>> violations = validator.validate(entity);
         if (violations != null && !violations.isEmpty()) {
-            throw new ValidationException(UserEntity.class.getName() + Arrays.toString(violations.toArray()));
+            throw new ValidationException(persistentClass.getName() + Arrays.toString(violations.toArray()));
         }
     }
 
@@ -26,7 +32,7 @@ public abstract class BaseValidator<E> implements MyValidator<E> {
     public void validForUpdate(E entity) {
         Set<ConstraintViolation<E>> violations = validator.validate(entity);
         if (violations != null && !violations.isEmpty()) {
-            throw new ValidationException(UserEntity.class.getName() + "errors.EntityCreateException.validate");
+            throw new ValidationException(persistentClass.getName() + "Invalid update: " + violations);
         }
     }
 

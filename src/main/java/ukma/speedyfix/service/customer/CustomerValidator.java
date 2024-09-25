@@ -6,4 +6,8 @@ import ukma.speedyfix.service.BaseValidator;
 
 @Component
 public class CustomerValidator extends BaseValidator<CustomerEntity> {
+
+    public CustomerValidator() {
+        super(CustomerEntity.class);
+    }
 }

@@ -6,4 +6,8 @@ import ukma.speedyfix.service.BaseValidator;
 
 @Component
 public class OperationValidator extends BaseValidator<OperationEntity> {
+
+    public OperationValidator() {
+        super(OperationEntity.class);
+    }
 }

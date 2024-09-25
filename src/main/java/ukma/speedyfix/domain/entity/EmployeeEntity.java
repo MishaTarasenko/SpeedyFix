@@ -10,27 +10,36 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ukma.speedyfix.domain.type.EmployeeType;
 
+import java.util.Set;
+
 @Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "employee")
 public class EmployeeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
 
     @NotBlank
-    @Size
+    @Size(max = 1000)
+    @Column(name = "position")
     private String position;
 
     @NotNull
     @Enumerated(EnumType.STRING)
+    @Column(name = "type")
     private EmployeeType type;
 
     @NotNull
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity user;
+
+    @ManyToMany(mappedBy = "employees")
+    private Set<OperationEntity> operations;
 }
