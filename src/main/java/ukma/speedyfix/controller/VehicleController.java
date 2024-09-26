@@ -47,7 +47,7 @@ public class VehicleController {
     }
 
     @GetMapping(path = "/owner/{id}")
-    public ResponseEntity<VehicleResponse> findByOwner(@PathVariable("id") Integer id) {
-        return ResponseEntity.ok(vehicleService.getResponseById(id));
+    public ResponseEntity<List<VehicleResponse>> findByOwner(@PathVariable("id") Integer id) {
+        return ResponseEntity.ok(vehicleService.getVehiclesByCustomerId(id));
     }
 }
