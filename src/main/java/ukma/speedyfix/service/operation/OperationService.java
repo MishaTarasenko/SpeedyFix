@@ -79,6 +79,12 @@ public class OperationService implements MyService<OperationEntity, OperationVie
         return true;
     }
 
+    @Override
+    public List<OperationResponse> getAllOperationsByEmployeeId(Integer employeeId) {
+        return repository.findAllByEmployeeId(employeeId).stream()
+                .map(this::buildResponse).toList();
+    }
+
     private OperationResponse buildResponse(OperationEntity entity) {
         return OperationResponse.builder()
                 .id(entity.getId())

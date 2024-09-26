@@ -37,7 +37,7 @@ public class OperationController {
     }
 
     @PutMapping(path = "/{id}/employee/add")
-    public ResponseEntity<Boolean> addEmployees(@PathVariable("id") Integer id, @RequestBody List<Integer> employeesId) {
+    public ResponseEntity<Boolean> addEmployees(@PathVariable("id") Integer id, @RequestParam List<Integer> employeesId) {
         log.info("Add employees to operation with id: {}", id);
         return ResponseEntity.ok(operationService.addRemoveEmployeesToOperation(id, employeesId, true));
     }
@@ -58,4 +58,8 @@ public class OperationController {
         return ResponseEntity.ok(operationService.getListResponse());
     }
 
+    @GetMapping(path = "/employee/{id}")
+    public ResponseEntity<List<OperationResponse>> findAllByEmployeeById(@PathVariable("id") Integer id) {
+        return ResponseEntity.ok(operationService.getAllOperationsByEmployeeId(id));
+    }
 }
