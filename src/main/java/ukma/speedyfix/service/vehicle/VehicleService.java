@@ -3,7 +3,6 @@ package ukma.speedyfix.service.vehicle;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ukma.speedyfix.domain.entity.CustomerEntity;
 import ukma.speedyfix.domain.entity.VehicleEntity;
 import ukma.speedyfix.domain.response.CustomerResponse;
 import ukma.speedyfix.domain.response.VehicleResponse;
@@ -14,8 +13,6 @@ import ukma.speedyfix.service.MyService;
 import ukma.speedyfix.service.MyValidator;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,25 +23,18 @@ public class VehicleService implements MyService<VehicleEntity, VehicleView,  In
     private final VehicleMerger merger;
 
     public VehicleResponse getResponseById(Integer id) {
-        VehicleEntity entity =  repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Vehicle with id: "+id+" not found!"));
-        return buildResponse(entity);
+        return buildResponse(getById(id));
     }
 
     public List<VehicleResponse> getListResponse() {
         return repository.findAll().stream()
-                .map(this::buildResponse).collect(Collectors.toList());
+                .map(this::buildResponse).toList();
     }
 
     @Override
     public VehicleEntity getById(Integer id) {
         return repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Vehicle with id: " + id + " not found"));
-    }
-
-    @Override
-    public List<VehicleEntity> getList(Map<String, Object> criteria) {
-        return List.of();
+                .orElseThrow(() -> new EntityNotFoundException("Vehicle with id: " + id + " not found!"));
     }
 
     @Override
@@ -75,7 +65,7 @@ public class VehicleService implements MyService<VehicleEntity, VehicleView,  In
 
     public List<VehicleResponse> getVehiclesByCustomerId(Integer customerId) {
         return repository.findAllByOwnerId(customerId).stream()
-                .map(this::buildResponse).collect(Collectors.toList());
+                .map(this::buildResponse).toList();
     }
 
     private VehicleResponse buildResponse(VehicleEntity entity) {

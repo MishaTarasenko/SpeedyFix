@@ -2,8 +2,6 @@ package ukma.speedyfix.service.user;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import ukma.speedyfix.domain.entity.UserEntity;
 import ukma.speedyfix.merger.UserMerger;
@@ -12,22 +10,22 @@ import ukma.speedyfix.service.MyService;
 import ukma.speedyfix.service.MyValidator;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserService implements MyAuthService<UserEntity> {
+public class UserService implements MyService<UserEntity, UserEntity, Integer>, MyAuthService<UserEntity> {
 
     private final MyValidator<UserEntity> validator;
     private final UserRepository repository;
     private final UserMerger merger;
 
+    @Override
     public UserEntity getById(Integer id) {
         return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("User with id: " + id + " not found"));
     }
 
-    public List<UserEntity> getList(Map<String, Object> criteria) {
+    public List<UserEntity> getList() {
         return repository.findAll();
     }
 

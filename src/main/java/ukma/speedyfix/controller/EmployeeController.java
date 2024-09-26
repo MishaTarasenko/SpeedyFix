@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import ukma.speedyfix.domain.entity.EmployeeEntity;
+import ukma.speedyfix.domain.response.EmployeeResponse;
 import ukma.speedyfix.domain.view.EmployeeView;
 import ukma.speedyfix.service.employee.EmployeeService;
 
@@ -37,12 +37,12 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public ResponseEntity<List<EmployeeEntity>> findAll() {
-        return ResponseEntity.ok(employeeService.getList(null));
+    public ResponseEntity<List<EmployeeResponse>> findAll() {
+        return ResponseEntity.ok(employeeService.getList());
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<EmployeeEntity> findById(@PathVariable("id") Integer id) {
-        return ResponseEntity.ok(employeeService.getById(id));
+    public ResponseEntity<EmployeeResponse> findById(@PathVariable("id") Integer id) {
+        return ResponseEntity.ok(employeeService.getResponseById(id));
     }
 }

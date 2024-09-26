@@ -1,6 +1,8 @@
 package ukma.speedyfix.service.operation;
 
+import java.util.List;
+
 public interface MyOperationService {
 
-    public boolean addEmployeeToOperation(Integer employeeId, Integer operationId);
+    public boolean addRemoveEmployeesToOperation(Integer operationId, List<Integer> employeesId, boolean isAdd);
 }

@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ukma.speedyfix.domain.entity.OperationEntity;
 import ukma.speedyfix.domain.entity.OperationOrderEntity;
-import ukma.speedyfix.domain.response.CustomerResponse;
 import ukma.speedyfix.domain.type.OperationOrderStatusType;
 import ukma.speedyfix.domain.view.OperationOrderView;
 import ukma.speedyfix.service.MyService;
@@ -28,7 +27,6 @@ public class OperationOrderService implements MyService<OperationOrderEntity, Op
         return null;
     }
 
-    @Override
     public List<OperationOrderEntity> getList(Map<String, Object> criteria) {
         return List.of();
     }

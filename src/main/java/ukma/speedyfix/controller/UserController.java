@@ -33,7 +33,7 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<UserEntity>> findAll() {
-        return ResponseEntity.ok(userService.getList(null));
+        return ResponseEntity.ok(userService.getList());
     }
 
     @GetMapping(path = "/{id}")
