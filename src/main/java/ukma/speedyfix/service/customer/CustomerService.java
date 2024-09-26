@@ -61,7 +61,7 @@ public class CustomerService implements MyService<CustomerEntity, CustomerView, 
     public boolean delete(Integer id) {
         CustomerEntity entity = getById(id);
         validator.validForDelete(entity);
-        List<VehicleEntity> vehicles = vehicleRepository.findAllByOwnerId(id);
+        List<VehicleEntity> vehicles = vehicleRepository.findAllByOwner(entity);
         vehicleRepository.deleteAll(vehicles);
         repository.delete(entity);
         return true;

@@ -15,6 +15,7 @@ import ukma.speedyfix.service.MyService;
 import ukma.speedyfix.service.MyValidator;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -81,7 +82,7 @@ public class OperationService implements MyService<OperationEntity, OperationVie
 
     @Override
     public List<OperationResponse> getAllOperationsByEmployeeId(Integer employeeId) {
-        return repository.findAllByEmployeeId(employeeId).stream()
+        return repository.findAllByEmployeesIn(List.of(employeeRepository.findById(employeeId).orElse(null))).stream()
                 .map(this::buildResponse).toList();
     }
 

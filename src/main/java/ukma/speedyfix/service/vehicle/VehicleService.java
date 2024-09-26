@@ -11,6 +11,7 @@ import ukma.speedyfix.merger.VehicleMerger;
 import ukma.speedyfix.repositories.VehicleRepository;
 import ukma.speedyfix.service.MyService;
 import ukma.speedyfix.service.MyValidator;
+import ukma.speedyfix.service.customer.CustomerService;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class VehicleService implements MyService<VehicleEntity, VehicleView,  In
 
     private final MyValidator<VehicleEntity> validator;
     private final VehicleRepository repository;
+    private final CustomerService customerService;
     private final VehicleMerger merger;
 
     public VehicleResponse getResponseById(Integer id) {
@@ -64,7 +66,7 @@ public class VehicleService implements MyService<VehicleEntity, VehicleView,  In
     }
 
     public List<VehicleResponse> getVehiclesByCustomerId(Integer customerId) {
-        return repository.findAllByOwnerId(customerId).stream()
+        return repository.findAllByOwner(customerService.getById(customerId)).stream()
                 .map(this::buildResponse).toList();
     }
 
