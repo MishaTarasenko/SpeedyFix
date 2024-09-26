@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ukma.speedyfix.domain.entity.OperationEntity;
 import ukma.speedyfix.domain.entity.UserEntity;
+import ukma.speedyfix.domain.response.OperationResponse;
 import ukma.speedyfix.domain.response.VehicleResponse;
 import ukma.speedyfix.domain.view.OperationView;
 import ukma.speedyfix.domain.view.VehicleView;
@@ -54,13 +55,13 @@ public class OperationController {
 
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<OperationEntity> findById(@PathVariable("id") Integer id) {
-        return ResponseEntity.ok(operationService.getById(id));
+    public ResponseEntity<OperationResponse> findById(@PathVariable("id") Integer id) {
+        return ResponseEntity.ok(operationService.getResponseById(id));
     }
 
     @GetMapping
-    public ResponseEntity<List<OperationEntity>> findAll() {
-        return ResponseEntity.ok(operationService.getList(null));
+    public ResponseEntity<List<OperationResponse>> findAll() {
+        return ResponseEntity.ok(operationService.getListResponse());
     }
 
 }

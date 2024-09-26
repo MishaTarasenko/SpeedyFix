@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import ukma.speedyfix.domain.entity.EmployeeEntity;
 import ukma.speedyfix.domain.entity.OperationEntity;
 import ukma.speedyfix.domain.response.CustomerResponse;
+import ukma.speedyfix.domain.response.EmployeeResponse;
+import ukma.speedyfix.domain.response.OperationResponse;
 import ukma.speedyfix.domain.view.OperationView;
 import ukma.speedyfix.merger.OperationMerger;
 import ukma.speedyfix.repositories.EmployeeRepository;
@@ -18,6 +20,7 @@ import ukma.speedyfix.service.MyValidator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,18 +31,27 @@ public class OperationService implements MyService<OperationEntity, OperationVie
     private final EmployeeRepository employeeRepository;
     private final OperationMerger merger;
 
-    @Transactional
-    @Override
-    public OperationEntity getById(Integer id) {
+    public OperationResponse getResponseById(Integer id) {
         OperationEntity entity = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Operation with id: " + id + " not found!"));
-        repository.findAll().forEach(System.out::println);
-        return entity;
+        return buildResponse(entity);
+    }
+
+    public List<OperationResponse> getListResponse() {
+        return repository.findAll().stream()
+                .map(this::buildResponse).collect(Collectors.toList());
+    }
+
+
+    @Override
+    public OperationEntity getById(Integer id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Operation with id: " + id + " not found!"));
     }
 
     @Override
     public List<OperationEntity> getList(Map<String, Object> criteria) {
-        return repository.findAll();
+        return List.of();
     }
 
     @Override
@@ -70,8 +82,7 @@ public class OperationService implements MyService<OperationEntity, OperationVie
     public boolean removeEmployees(Integer id, List<Integer> employeesId) {
         OperationEntity entity = getById(id);
         validator.validForUpdate(entity);
-        Set<EmployeeEntity> employees = entity.getEmployees();
-        employeeRepository.findAll().forEach(System.out::println);
+        List<EmployeeEntity> employees = entity.getEmployees();
         employees.removeAll(employeeRepository.findAllById(employeesId));
         entity.setEmployees(employees);
         repository.saveAndFlush(entity);
@@ -89,5 +100,25 @@ public class OperationService implements MyService<OperationEntity, OperationVie
     @Override
     public boolean addEmployeeToOperation(Integer employeeId, Integer operationId) {
         return false;
+    }
+
+    private OperationResponse buildResponse(OperationEntity entity) {
+        return OperationResponse.builder()
+                .id(entity.getId())
+                .name(entity.getName())
+                .description(entity.getDescription())
+                .price(entity.getPrice())
+                .employees(entity.getEmployees().stream()
+                        .map(this::buidEmployeeResponse).collect(Collectors.toList()))
+                .build();
+    }
+
+    private EmployeeResponse buidEmployeeResponse(EmployeeEntity entity) {
+        return EmployeeResponse.builder()
+                .id(entity.getId())
+                .position(entity.getPosition())
+                .type(entity.getType())
+                .user(entity.getUser())
+                .build();
     }
 }

@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -34,10 +35,10 @@ public class OperationEntity {
     @Column(name = "price")
     private Double price;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(
             name = "operation_employee",
             joinColumns = @JoinColumn(name = "operation_id"),
             inverseJoinColumns = @JoinColumn(name = "employee_id"))
-    private Set<EmployeeEntity> employees = new HashSet<>();
+    private List<EmployeeEntity> employees;
 }

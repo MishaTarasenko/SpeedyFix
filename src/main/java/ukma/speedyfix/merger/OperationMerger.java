@@ -7,6 +7,7 @@ import ukma.speedyfix.domain.entity.OperationEntity;
 import ukma.speedyfix.domain.view.OperationView;
 import ukma.speedyfix.repositories.EmployeeRepository;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,7 @@ public class OperationMerger {
         }
         if (view.getEmployeeIds() != null && !view.getEmployeeIds().isEmpty()) {
             entity.setEmployees(
-                    new HashSet<>(employeeRepository.findAllById(view.getEmployeeIds()))
+                    new ArrayList<>(employeeRepository.findAllById(view.getEmployeeIds()))
             );
         }
     }
