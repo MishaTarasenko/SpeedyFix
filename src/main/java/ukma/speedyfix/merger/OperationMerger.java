@@ -32,4 +32,17 @@ public class OperationMerger {
             );
         }
     }
+
+    public void mergeUpdate(OperationEntity entity, OperationView view) {
+        if (view.getName() != null) {
+            entity.setName(view.getName());
+        }
+        if (view.getDescription() != null) {
+            entity.setDescription(view.getDescription());
+        }
+        if (view.getPrice() != null) {
+            entity.setPrice(view.getPrice());
+        }
+    }
+
 }
