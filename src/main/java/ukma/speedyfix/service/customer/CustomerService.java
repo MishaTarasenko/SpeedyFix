@@ -14,8 +14,6 @@ import ukma.speedyfix.service.MyService;
 import ukma.speedyfix.service.MyValidator;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,25 +25,18 @@ public class CustomerService implements MyService<CustomerEntity, CustomerView, 
     private final CustomerMerger merger;
 
     public CustomerResponse getResponseById(Integer id) {
-        CustomerEntity entity =  repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Customer with id: " + id + " not found"));
-        return buildResponse(entity);
+        return buildResponse(getById(id));
     }
 
-    public List<CustomerResponse> getListResponse(Map<String, Object> criteria) {
+    public List<CustomerResponse> getListResponse() {
         return repository.findAll().stream()
-                .map(this::buildResponse).collect(Collectors.toList());
+                .map(this::buildResponse).toList();
     }
 
     @Override
     public CustomerEntity getById(Integer id) {
         return repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Customer with id: " + id + " not found"));
-    }
-
-    @Override
-    public List<CustomerEntity> getList(Map<String, Object> criteria) {
-        return List.of();
     }
 
     @Override
@@ -70,10 +61,8 @@ public class CustomerService implements MyService<CustomerEntity, CustomerView, 
     public boolean delete(Integer id) {
         CustomerEntity entity = getById(id);
         validator.validForDelete(entity);
-
-        List<VehicleEntity> vehicles = vehicleRepository.findAllByOwnerId(id);
+        List<VehicleEntity> vehicles = vehicleRepository.findAllByOwner(entity);
         vehicleRepository.deleteAll(vehicles);
-
         repository.delete(entity);
         return true;
     }

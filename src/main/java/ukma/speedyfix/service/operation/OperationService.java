@@ -1,13 +1,10 @@
 package ukma.speedyfix.service.operation;
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ukma.speedyfix.domain.entity.EmployeeEntity;
 import ukma.speedyfix.domain.entity.OperationEntity;
-import ukma.speedyfix.domain.response.CustomerResponse;
 import ukma.speedyfix.domain.response.EmployeeResponse;
 import ukma.speedyfix.domain.response.OperationResponse;
 import ukma.speedyfix.domain.view.OperationView;
@@ -18,9 +15,7 @@ import ukma.speedyfix.service.MyService;
 import ukma.speedyfix.service.MyValidator;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -32,26 +27,17 @@ public class OperationService implements MyService<OperationEntity, OperationVie
     private final OperationMerger merger;
 
     public OperationResponse getResponseById(Integer id) {
-        OperationEntity entity = repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Operation with id: " + id + " not found!"));
-        return buildResponse(entity);
+        return buildResponse(getById(id));
     }
 
     public List<OperationResponse> getListResponse() {
-        return repository.findAll().stream()
-                .map(this::buildResponse).collect(Collectors.toList());
+        return repository.findAll().stream().map(this::buildResponse).toList();
     }
-
 
     @Override
     public OperationEntity getById(Integer id) {
         return repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Operation with id: " + id + " not found!"));
-    }
-
-    @Override
-    public List<OperationEntity> getList(Map<String, Object> criteria) {
-        return List.of();
     }
 
     @Override
@@ -71,24 +57,6 @@ public class OperationService implements MyService<OperationEntity, OperationVie
         return true;
     }
 
-    public boolean addEmployees(Integer id, Set<Integer> employeesId) {
-        OperationEntity entity = getById(id);
-        validator.validForUpdate(entity);
-        entity.getEmployees().addAll(employeeRepository.findAllById(employeesId));
-        repository.saveAndFlush(entity);
-        return true;
-    }
-
-    public boolean removeEmployees(Integer id, List<Integer> employeesId) {
-        OperationEntity entity = getById(id);
-        validator.validForUpdate(entity);
-        List<EmployeeEntity> employees = entity.getEmployees();
-        employees.removeAll(employeeRepository.findAllById(employeesId));
-        entity.setEmployees(employees);
-        repository.saveAndFlush(entity);
-        return true;
-    }
-
     @Override
     public boolean delete(Integer id) {
         OperationEntity entity = getById(id);
@@ -98,8 +66,24 @@ public class OperationService implements MyService<OperationEntity, OperationVie
     }
 
     @Override
-    public boolean addEmployeeToOperation(Integer employeeId, Integer operationId) {
-        return false;
+    public boolean addRemoveEmployeesToOperation(Integer operationId, List<Integer> employeesId, boolean isAdd) {
+        OperationEntity entity = getById(operationId);
+        validator.validForUpdate(entity);
+        List<EmployeeEntity> employees = entity.getEmployees();
+        if (isAdd) {
+            employees.addAll(employeeRepository.findAllById(employeesId));
+        } else {
+            employees.removeAll(employeeRepository.findAllById(employeesId));
+        }
+        entity.setEmployees(employees);
+        repository.saveAndFlush(entity);
+        return true;
+    }
+
+    @Override
+    public List<OperationResponse> getAllOperationsByEmployeeId(Integer employeeId) {
+        return repository.findAllByEmployeesIn(List.of(employeeRepository.findById(employeeId).orElse(null))).stream()
+                .map(this::buildResponse).toList();
     }
 
     private OperationResponse buildResponse(OperationEntity entity) {
@@ -109,7 +93,7 @@ public class OperationService implements MyService<OperationEntity, OperationVie
                 .description(entity.getDescription())
                 .price(entity.getPrice())
                 .employees(entity.getEmployees().stream()
-                        .map(this::buidEmployeeResponse).collect(Collectors.toList()))
+                        .map(this::buidEmployeeResponse).toList())
                 .build();
     }
 

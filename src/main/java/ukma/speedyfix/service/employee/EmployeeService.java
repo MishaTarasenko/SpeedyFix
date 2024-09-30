@@ -4,7 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ukma.speedyfix.domain.entity.EmployeeEntity;
-import ukma.speedyfix.domain.response.CustomerResponse;
+import ukma.speedyfix.domain.response.EmployeeResponse;
 import ukma.speedyfix.domain.view.EmployeeView;
 import ukma.speedyfix.merger.EmployeeMerger;
 import ukma.speedyfix.repositories.EmployeeRepository;
@@ -12,7 +12,6 @@ import ukma.speedyfix.service.MyService;
 import ukma.speedyfix.service.MyValidator;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -22,14 +21,18 @@ public class EmployeeService implements MyService<EmployeeEntity, EmployeeView, 
     private final EmployeeRepository repository;
     private final EmployeeMerger merger;
 
-    @Override
-    public EmployeeEntity getById(Integer id) {
-        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Employee with id: "+id+" not found!"));
+    public EmployeeResponse getResponseById(Integer id) {
+        return buildResponse(getById(id));
+    }
+
+    public List<EmployeeResponse> getList() {
+        return repository.findAll().stream().map(this::buildResponse).toList();
     }
 
     @Override
-    public List<EmployeeEntity> getList(Map<String, Object> criteria) {
-        return repository.findAll();
+    public EmployeeEntity getById(Integer id) {
+        return repository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Employee with id: " + id + " not found!"));
     }
 
     @Override
@@ -57,5 +60,14 @@ public class EmployeeService implements MyService<EmployeeEntity, EmployeeView, 
         validator.validForDelete(entity);
         repository.delete(entity);
         return true;
+    }
+
+    private EmployeeResponse buildResponse(EmployeeEntity entity) {
+        return EmployeeResponse.builder()
+                .id(entity.getId())
+                .position(entity.getPosition())
+                .type(entity.getType())
+                .user(entity.getUser())
+                .build();
     }
 }

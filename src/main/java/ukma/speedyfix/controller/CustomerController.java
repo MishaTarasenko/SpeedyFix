@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import ukma.speedyfix.domain.entity.CustomerEntity;
 import ukma.speedyfix.domain.response.CustomerResponse;
 import ukma.speedyfix.domain.view.CustomerView;
 import ukma.speedyfix.service.customer.CustomerService;
@@ -28,7 +27,7 @@ public class CustomerController {
 
     @GetMapping
     public ResponseEntity<List<CustomerResponse>> findAll() {
-        return ResponseEntity.ok(customerService.getListResponse(null));
+        return ResponseEntity.ok(customerService.getListResponse());
     }
 
     @GetMapping(path = "/{id}")
