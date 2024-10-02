@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ukma.speedyfix.domain.entity.EmployeeEntity;
 import ukma.speedyfix.domain.entity.OperationEntity;
 import ukma.speedyfix.domain.entity.OperationOrderEntity;
+import ukma.speedyfix.domain.response.OperationOrderResponse;
 import ukma.speedyfix.domain.type.OperationOrderStatusType;
 import ukma.speedyfix.domain.view.OperationOrderView;
 import ukma.speedyfix.exception.NoSuchEntityException;
@@ -14,9 +15,13 @@ import ukma.speedyfix.repositories.OperationOrderRepository;
 import ukma.speedyfix.repositories.OperationRepository;
 import ukma.speedyfix.service.MyService;
 import ukma.speedyfix.service.MyValidator;
+import ukma.speedyfix.service.customer.CustomerService;
+import ukma.speedyfix.service.operation.OperationService;
+import ukma.speedyfix.service.vehicle.VehicleService;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +32,9 @@ public class OperationOrderService implements MyService<OperationOrderEntity, Op
     private final OperationRepository operationRepository;
     private final EmployeeRepository employeeRepository;
     private final OperationOrderMerger merger;
+    private final OperationService operationService;
+    private final CustomerService customerService;
+    private final VehicleService vehicleService;
 
     @Override
     public OperationOrderEntity getById(Integer id) {
@@ -35,12 +43,16 @@ public class OperationOrderService implements MyService<OperationOrderEntity, Op
             );
     }
 
-    public List<OperationOrderEntity> getListByCustomerId(Integer customerId) {
-        return repository.findAllByCustomerId(customerId);
+    public OperationOrderResponse getResponseById(Integer id) {
+        return buildResponse(getById(id));
     }
 
-    public List<OperationOrderEntity> getListByEmployeeId(Integer employeeId) {
-        return repository.findAllByEmployeeId(employeeId);
+    public List<OperationOrderResponse> getListByCustomerId(Integer customerId) {
+        return repository.findAllByCustomerId(customerId).stream().map(this::buildResponse).toList();
+    }
+
+    public List<OperationOrderResponse> getListByEmployeeId(Integer employeeId) {
+        return repository.findAllByEmployeeId(employeeId).stream().map(this::buildResponse).toList();
     }
 
     @Override
@@ -67,7 +79,7 @@ public class OperationOrderService implements MyService<OperationOrderEntity, Op
         OperationOrderEntity entity = getById(id);
         validator.validForDelete(entity);
         repository.delete(entity);
-        return false;
+        return true;
     }
 
     @Override
@@ -115,5 +127,24 @@ public class OperationOrderService implements MyService<OperationOrderEntity, Op
         validator.validForUpdate(entity);
         repository.saveAndFlush(entity);
         return true;
+    }
+
+    private OperationOrderResponse buildResponse(OperationOrderEntity entity) {
+        return OperationOrderResponse.builder()
+                .id(entity.getId())
+                .orderStatus(entity.getOrderStatus())
+                .startDate(entity.getStartDate())
+                .endDate(entity.getEndDate())
+                .operations(entity.getOperations().stream()
+                        .map(operationService::buildResponse)
+                        .collect(Collectors.toSet())
+                )
+                .vehicle(vehicleService.buildResponse(entity.getVehicle()))
+                .customer(customerService.buildResponse(entity.getCustomer()))
+                .employee(entity.getEmployee().stream()
+                        .map(operationService::buidEmployeeResponse)
+                        .collect(Collectors.toSet())
+                )
+                .build();
     }
 }

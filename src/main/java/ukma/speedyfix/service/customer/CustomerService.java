@@ -67,7 +67,7 @@ public class CustomerService implements MyService<CustomerEntity, CustomerView, 
         return true;
     }
 
-    private CustomerResponse buildResponse(CustomerEntity entity) {
+    public CustomerResponse buildResponse(CustomerEntity entity) {
         return CustomerResponse.builder()
                 .id(entity.getId())
                 .user(entity.getUser())

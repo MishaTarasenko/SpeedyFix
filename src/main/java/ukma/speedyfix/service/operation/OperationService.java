@@ -85,7 +85,7 @@ public class OperationService implements MyService<OperationEntity, OperationVie
                 .map(this::buildResponse).toList();
     }
 
-    private OperationResponse buildResponse(OperationEntity entity) {
+    public OperationResponse buildResponse(OperationEntity entity) {
         return OperationResponse.builder()
                 .id(entity.getId())
                 .name(entity.getName())
@@ -96,7 +96,7 @@ public class OperationService implements MyService<OperationEntity, OperationVie
                 .build();
     }
 
-    private EmployeeResponse buidEmployeeResponse(EmployeeEntity entity) {
+    public EmployeeResponse buidEmployeeResponse(EmployeeEntity entity) {
         return EmployeeResponse.builder()
                 .id(entity.getId())
                 .position(entity.getPosition())

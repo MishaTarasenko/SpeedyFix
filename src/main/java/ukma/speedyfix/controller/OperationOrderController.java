@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ukma.speedyfix.domain.entity.OperationOrderEntity;
+import ukma.speedyfix.domain.response.OperationOrderResponse;
 import ukma.speedyfix.domain.view.OperationOrderView;
 import ukma.speedyfix.service.operation.order.OperationOrderService;
 
@@ -38,26 +38,26 @@ public class OperationOrderController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<OperationOrderEntity> findById(@PathVariable("id") Integer id) {
-        return ResponseEntity.ok(service.getById(id));
+    public ResponseEntity<OperationOrderResponse> findById(@PathVariable("id") Integer id) {
+        return ResponseEntity.ok(service.getResponseById(id));
     }
 
     @GetMapping(path = "/customer/{id}")
-    public ResponseEntity<List<OperationOrderEntity>> findAllByCustomerId(@PathVariable("id") Integer id) {
+    public ResponseEntity<List<OperationOrderResponse>> findAllByCustomerId(@PathVariable("id") Integer id) {
         return ResponseEntity.ok(service.getListByCustomerId(id));
     }
 
     @GetMapping(path = "/employee/{id}")
-    public ResponseEntity<List<OperationOrderEntity>> findAllByEmployeeById(@PathVariable("id") Integer id) {
+    public ResponseEntity<List<OperationOrderResponse>> findAllByEmployeeById(@PathVariable("id") Integer id) {
         return ResponseEntity.ok(service.getListByEmployeeId(id));
     }
 
-    @PostMapping(path = "{orderId}/operation/{operationId}/{isAdd}")
+    @PutMapping(path = "{orderId}/operation/{operationId}/{isAdd}")
     public ResponseEntity<Boolean> operateOperation(@PathVariable Integer orderId, @PathVariable Integer operationId, @PathVariable boolean isAdd) {
         return ResponseEntity.ok(service.operateOperation(orderId, operationId, isAdd));
     }
 
-    @PostMapping(path = "{orderId}/employee/{employeeId}/{isAdd}")
+    @PutMapping(path = "{orderId}/employee/{employeeId}/{isAdd}")
     public ResponseEntity<Boolean> operateEmployee(@PathVariable Integer orderId, @PathVariable Integer employeeId, @PathVariable boolean isAdd) {
         return ResponseEntity.ok(service.operateEmployee(orderId, employeeId, isAdd));
     }
