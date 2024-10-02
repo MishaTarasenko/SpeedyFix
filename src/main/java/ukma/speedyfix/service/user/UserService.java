@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ukma.speedyfix.domain.entity.UserEntity;
+import ukma.speedyfix.exception.NoSuchEntityException;
 import ukma.speedyfix.merger.UserMerger;
 import ukma.speedyfix.repositories.UserRepository;
 import ukma.speedyfix.service.MyService;
@@ -22,7 +23,7 @@ public class UserService implements MyService<UserEntity, UserEntity, Integer>, 
 
     @Override
     public UserEntity getById(Integer id) {
-        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("User with id: " + id + " not found"));
+        return repository.findById(id).orElseThrow(() -> new NoSuchEntityException("User with id: " + id + " not found"));
     }
 
     public List<UserEntity> getList() {

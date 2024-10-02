@@ -8,6 +8,7 @@ import ukma.speedyfix.domain.entity.OperationEntity;
 import ukma.speedyfix.domain.response.EmployeeResponse;
 import ukma.speedyfix.domain.response.OperationResponse;
 import ukma.speedyfix.domain.view.OperationView;
+import ukma.speedyfix.exception.NoSuchEntityException;
 import ukma.speedyfix.merger.OperationMerger;
 import ukma.speedyfix.repositories.EmployeeRepository;
 import ukma.speedyfix.repositories.OperationRepository;
@@ -37,7 +38,7 @@ public class OperationService implements MyService<OperationEntity, OperationVie
     @Override
     public OperationEntity getById(Integer id) {
         return repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Operation with id: " + id + " not found!"));
+                .orElseThrow(() -> new NoSuchEntityException("Operation with id: " + id + " not found!"));
     }
 
     @Override

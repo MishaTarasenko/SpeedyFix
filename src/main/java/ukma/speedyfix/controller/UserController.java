@@ -4,15 +4,14 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ukma.speedyfix.domain.entity.UserEntity;
 import ukma.speedyfix.service.user.UserService;
 
 import java.util.List;
 
-@Controller
 @Slf4j
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
 public class UserController {

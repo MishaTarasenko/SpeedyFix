@@ -1,11 +1,9 @@
 package ukma.speedyfix.service;
 
-import jakarta.persistence.Persistence;
 import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ValidationException;
 import jakarta.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
-import ukma.speedyfix.domain.entity.UserEntity;
+import ukma.speedyfix.exception.ValidationException;
 
 import java.util.Arrays;
 import java.util.Set;

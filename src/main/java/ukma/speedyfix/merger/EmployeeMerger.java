@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ukma.speedyfix.domain.entity.EmployeeEntity;
 import ukma.speedyfix.domain.view.EmployeeView;
+import ukma.speedyfix.exception.NoSuchEntityException;
 import ukma.speedyfix.repositories.UserRepository;
 
 import java.util.NoSuchElementException;
@@ -23,7 +24,7 @@ public class EmployeeMerger {
         if (view.getUserId() != null) {
            entity.setUser(
                    repository.findById(view.getUserId())
-                           .orElseThrow(()->new NoSuchElementException("User with id: "+view.getId()+" not found!"))
+                           .orElseThrow(()->new NoSuchEntityException("User with id: " + view.getUserId() + " not found!"))
            );
         }
     }

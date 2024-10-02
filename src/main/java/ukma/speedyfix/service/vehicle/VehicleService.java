@@ -7,6 +7,7 @@ import ukma.speedyfix.domain.entity.VehicleEntity;
 import ukma.speedyfix.domain.response.CustomerResponse;
 import ukma.speedyfix.domain.response.VehicleResponse;
 import ukma.speedyfix.domain.view.VehicleView;
+import ukma.speedyfix.exception.NoSuchEntityException;
 import ukma.speedyfix.merger.VehicleMerger;
 import ukma.speedyfix.repositories.VehicleRepository;
 import ukma.speedyfix.service.MyService;
@@ -36,7 +37,7 @@ public class VehicleService implements MyService<VehicleEntity, VehicleView,  In
     @Override
     public VehicleEntity getById(Integer id) {
         return repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Vehicle with id: " + id + " not found!"));
+                .orElseThrow(() -> new NoSuchEntityException("Vehicle with id: " + id + " not found!"));
     }
 
     @Override

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ukma.speedyfix.domain.entity.VehicleEntity;
 import ukma.speedyfix.domain.view.VehicleView;
+import ukma.speedyfix.exception.NoSuchEntityException;
 import ukma.speedyfix.repositories.CustomerRepository;
 
 import java.util.NoSuchElementException;
@@ -41,7 +42,7 @@ public class VehicleMerger {
         if (view.getOwnerId() != null) {
             entity.setOwner(
                     repository.findById(view.getOwnerId())
-                            .orElseThrow(()->new NoSuchElementException("Customer with id: "+view.getOwnerId()+" not found!"))
+                            .orElseThrow(()->new NoSuchEntityException("Customer with id: " + view.getOwnerId() + " not found!"))
             );
         }
     }

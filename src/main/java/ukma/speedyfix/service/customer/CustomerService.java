@@ -1,12 +1,12 @@
 package ukma.speedyfix.service.customer;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ukma.speedyfix.domain.entity.CustomerEntity;
 import ukma.speedyfix.domain.entity.VehicleEntity;
 import ukma.speedyfix.domain.response.CustomerResponse;
 import ukma.speedyfix.domain.view.CustomerView;
+import ukma.speedyfix.exception.NoSuchEntityException;
 import ukma.speedyfix.merger.CustomerMerger;
 import ukma.speedyfix.repositories.CustomerRepository;
 import ukma.speedyfix.repositories.VehicleRepository;
@@ -36,7 +36,7 @@ public class CustomerService implements MyService<CustomerEntity, CustomerView, 
     @Override
     public CustomerEntity getById(Integer id) {
         return repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Customer with id: " + id + " not found"));
+                .orElseThrow(() -> new NoSuchEntityException("Customer with id: " + id + " not found"));
     }
 
     @Override

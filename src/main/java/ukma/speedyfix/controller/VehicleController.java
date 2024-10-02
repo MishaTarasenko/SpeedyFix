@@ -3,7 +3,6 @@ package ukma.speedyfix.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ukma.speedyfix.domain.response.VehicleResponse;
 import ukma.speedyfix.domain.view.VehicleView;
@@ -11,8 +10,8 @@ import ukma.speedyfix.service.vehicle.VehicleService;
 
 import java.util.List;
 
-@Controller
 @Slf4j
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/vehicle")
 public class VehicleController {

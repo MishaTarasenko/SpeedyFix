@@ -1,11 +1,11 @@
 package ukma.speedyfix.service.employee;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ukma.speedyfix.domain.entity.EmployeeEntity;
 import ukma.speedyfix.domain.response.EmployeeResponse;
 import ukma.speedyfix.domain.view.EmployeeView;
+import ukma.speedyfix.exception.NoSuchEntityException;
 import ukma.speedyfix.merger.EmployeeMerger;
 import ukma.speedyfix.repositories.EmployeeRepository;
 import ukma.speedyfix.service.MyService;
@@ -32,7 +32,7 @@ public class EmployeeService implements MyService<EmployeeEntity, EmployeeView, 
     @Override
     public EmployeeEntity getById(Integer id) {
         return repository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Employee with id: " + id + " not found!"));
+                () -> new NoSuchEntityException("Employee with id: " + id + " not found!"));
     }
 
     @Override
