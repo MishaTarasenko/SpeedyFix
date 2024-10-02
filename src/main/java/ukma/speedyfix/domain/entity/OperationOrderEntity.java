@@ -1,6 +1,7 @@
 package ukma.speedyfix.domain.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -46,6 +47,7 @@ public class OperationOrderEntity {
     private CustomerEntity customer;
 
     @ManyToMany
+    @NotEmpty
     @JoinTable(
             name = "operation_order_employee",
             joinColumns = @JoinColumn(name = "operation_order_id"),

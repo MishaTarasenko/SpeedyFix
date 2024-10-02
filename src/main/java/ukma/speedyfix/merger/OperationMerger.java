@@ -2,14 +2,11 @@ package ukma.speedyfix.merger;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ukma.speedyfix.domain.entity.EmployeeEntity;
 import ukma.speedyfix.domain.entity.OperationEntity;
 import ukma.speedyfix.domain.view.OperationView;
 import ukma.speedyfix.repositories.EmployeeRepository;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor

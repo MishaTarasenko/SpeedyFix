@@ -17,10 +17,10 @@ CREATE TABLE operation_order_employee (
     PRIMARY KEY (operation_order_id, employee_id)
 );
 
-CREATE TABLE operation_order_operation (
-    operation_order_id INT NOT NULL,
-    operation_id INT NOT NULL,
-    CONSTRAINT fk_operation_order FOREIGN KEY (operation_order_id) REFERENCES operation_order (id),
-    CONSTRAINT fk_operation FOREIGN KEY (operation_id) REFERENCES operation (id),
-    PRIMARY KEY (operation_order_id, operation_id)
+CREATE TABLE operation_order_operations (
+    operation_order_entity_id INT NOT NULL,
+    operations_id INT NOT NULL,
+    CONSTRAINT fk_operation_order FOREIGN KEY (operation_order_entity_id) REFERENCES operation_order (id),
+    CONSTRAINT fk_operation FOREIGN KEY (operations_id) REFERENCES operation (id),
+    PRIMARY KEY (operation_order_entity_id, operations_id)
 );

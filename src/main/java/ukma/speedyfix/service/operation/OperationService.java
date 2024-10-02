@@ -1,6 +1,5 @@
 package ukma.speedyfix.service.operation;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ukma.speedyfix.domain.entity.EmployeeEntity;
@@ -16,7 +15,6 @@ import ukma.speedyfix.service.MyService;
 import ukma.speedyfix.service.MyValidator;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
