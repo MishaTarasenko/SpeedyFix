@@ -1,6 +1,5 @@
 package ukma.speedyfix.service.operation;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ukma.speedyfix.domain.entity.EmployeeEntity;
@@ -16,7 +15,6 @@ import ukma.speedyfix.service.MyService;
 import ukma.speedyfix.service.MyValidator;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -87,7 +85,7 @@ public class OperationService implements MyService<OperationEntity, OperationVie
                 .map(this::buildResponse).toList();
     }
 
-    private OperationResponse buildResponse(OperationEntity entity) {
+    public OperationResponse buildResponse(OperationEntity entity) {
         return OperationResponse.builder()
                 .id(entity.getId())
                 .name(entity.getName())
@@ -98,7 +96,7 @@ public class OperationService implements MyService<OperationEntity, OperationVie
                 .build();
     }
 
-    private EmployeeResponse buidEmployeeResponse(EmployeeEntity entity) {
+    public EmployeeResponse buidEmployeeResponse(EmployeeEntity entity) {
         return EmployeeResponse.builder()
                 .id(entity.getId())
                 .position(entity.getPosition())

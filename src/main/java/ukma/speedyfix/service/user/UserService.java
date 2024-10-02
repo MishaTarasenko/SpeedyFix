@@ -1,6 +1,5 @@
 package ukma.speedyfix.service.user;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ukma.speedyfix.domain.entity.UserEntity;

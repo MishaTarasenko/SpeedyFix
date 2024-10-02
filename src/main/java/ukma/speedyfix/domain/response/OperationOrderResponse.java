@@ -1,5 +1,4 @@
-package ukma.speedyfix.domain.view;
-
+package ukma.speedyfix.domain.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,13 +13,14 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OperationOrderView {
+public class OperationOrderResponse {
 
     private Integer id;
     private OperationOrderStatusType orderStatus;
+    private LocalDate startDate;
     private LocalDate endDate;
-    private Set<Integer> operationIds;
-    private Integer vehicleId;
-    private Integer customerId;
-    private Set<Integer> employeeIds;
+    private Set<OperationResponse> operations;
+    private VehicleResponse vehicle;
+    private CustomerResponse customer;
+    private Set<EmployeeResponse> employee;
 }

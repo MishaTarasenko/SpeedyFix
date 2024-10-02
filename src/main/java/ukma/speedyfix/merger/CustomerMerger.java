@@ -7,8 +7,6 @@ import ukma.speedyfix.domain.view.CustomerView;
 import ukma.speedyfix.exception.NoSuchEntityException;
 import ukma.speedyfix.repositories.UserRepository;
 
-import java.util.NoSuchElementException;
-
 @Component
 @RequiredArgsConstructor
 public class CustomerMerger {

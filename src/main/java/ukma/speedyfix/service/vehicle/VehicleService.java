@@ -71,7 +71,7 @@ public class VehicleService implements MyService<VehicleEntity, VehicleView,  In
                 .map(this::buildResponse).toList();
     }
 
-    private VehicleResponse buildResponse(VehicleEntity entity) {
+    public VehicleResponse buildResponse(VehicleEntity entity) {
         return VehicleResponse.builder()
                 .id(entity.getId())
                 .brand(entity.getBrand())

@@ -7,8 +7,6 @@ import ukma.speedyfix.domain.view.VehicleView;
 import ukma.speedyfix.exception.NoSuchEntityException;
 import ukma.speedyfix.repositories.CustomerRepository;
 
-import java.util.NoSuchElementException;
-
 @Component
 @RequiredArgsConstructor
 public class VehicleMerger {
