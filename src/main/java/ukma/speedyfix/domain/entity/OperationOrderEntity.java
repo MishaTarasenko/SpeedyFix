@@ -37,16 +37,16 @@ public class OperationOrderEntity {
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REFRESH)
     private Set<OperationEntity> operations;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REFRESH)
     private VehicleEntity vehicle;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REFRESH)
     private CustomerEntity customer;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REFRESH)
     @NotEmpty
     @JoinTable(
             name = "operation_order_employee",

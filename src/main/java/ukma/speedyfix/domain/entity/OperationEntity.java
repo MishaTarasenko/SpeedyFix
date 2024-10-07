@@ -33,7 +33,7 @@ public class OperationEntity {
     @Column(name = "price")
     private Double price;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REFRESH)
     @JoinTable(
             name = "operation_employee",
             joinColumns = @JoinColumn(name = "operation_id"),

@@ -20,7 +20,6 @@ public class OperationOrderController {
 
     @PostMapping
     public ResponseEntity<Integer> createOperationOrder(@RequestBody OperationOrderView view) {
-        System.out.println(view);
         log.info("Create operation order: {}", view);
         return ResponseEntity.ok(service.create(view));
     }

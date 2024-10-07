@@ -36,7 +36,7 @@ public class EmployeeEntity {
     private EmployeeType type;
 
     @NotNull
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity user;
 

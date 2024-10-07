@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
 
 import java.util.List;
 
@@ -27,7 +26,7 @@ public class CustomerEntity {
     private List<VehicleEntity> vehicles;
 
     @NotNull
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity user;
 }

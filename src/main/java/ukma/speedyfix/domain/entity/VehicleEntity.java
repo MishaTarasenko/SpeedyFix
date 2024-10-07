@@ -58,7 +58,7 @@ public class VehicleEntity {
     @Column(name = "registration_number")
     private String registrationNumber;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "owner_id")
     private CustomerEntity owner;
 }
