@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import ukma.speedyfix.domain.StoInfo;
 
 @Configuration
-public class CheckConfiguration {
+public class StoInfoConfiguration {
 
     @Bean("conditionalStoConfig")
     @ConditionalOnProperty(prefix = "sto", name = "weekend", havingValue = "Monday")
