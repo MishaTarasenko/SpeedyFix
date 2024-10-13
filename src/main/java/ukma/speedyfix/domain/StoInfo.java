@@ -1,12 +1,11 @@
-package ukma.speedyfix.config;
+package ukma.speedyfix.domain;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
-public class StoConfig {
+public class StoInfo {
 
     private String openingHours;
     private String closingHours;

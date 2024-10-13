@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import ukma.speedyfix.domain.StoInfo;
 
 @Configuration
 public class CheckConfiguration {
@@ -13,23 +14,23 @@ public class CheckConfiguration {
     @Bean("conditionalStoConfig")
     @ConditionalOnProperty(prefix = "sto", name = "weekend", havingValue = "Monday")
     @ConditionalOnExpression("'${sto.opening-hours}' > '10'")
-    public StoConfig conditionalStoConfig() {
-        StoConfig stoConfig = new StoConfig();
-        stoConfig.setOpeningHours("8");
-        stoConfig.setClosingHours("18");
-        stoConfig.setWeekend("Sunday");
-        return stoConfig;
+    public StoInfo conditionalStoConfig() {
+        StoInfo stoInfo = new StoInfo();
+        stoInfo.setOpeningHours("8");
+        stoInfo.setClosingHours("18");
+        stoInfo.setWeekend("Sunday");
+        return stoInfo;
     }
 
     @Bean("conditionalStoConfig")
-    @ConditionalOnMissingBean(name = "conditionalStoConfig")
-    public StoConfig defaultStoConfig(@Value("${sto.opening-hours}") String openingHours,
-                                      @Value("${sto.closing-hours}") String closingHours,
-                                      @Value("${sto.weekend}") String weekend) {
-        StoConfig stoConfig = new StoConfig();
-        stoConfig.setOpeningHours(openingHours);
-        stoConfig.setClosingHours(closingHours);
-        stoConfig.setWeekend(weekend);
-        return stoConfig;
+    @ConditionalOnMissingBean(StoInfo.class)
+    public StoInfo defaultStoConfig(@Value("${sto.opening-hours}") String openingHours,
+                                    @Value("${sto.closing-hours}") String closingHours,
+                                    @Value("${sto.weekend}") String weekend) {
+        StoInfo stoInfo = new StoInfo();
+        stoInfo.setOpeningHours(openingHours);
+        stoInfo.setClosingHours(closingHours);
+        stoInfo.setWeekend(weekend);
+        return stoInfo;
     }
 }
