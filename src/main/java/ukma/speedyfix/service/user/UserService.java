@@ -1,7 +1,12 @@
 package ukma.speedyfix.service.user;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.MarkerManager;
+import org.apache.logging.log4j.ThreadContext;
 import org.springframework.stereotype.Service;
+import ukma.speedyfix.controller.UserController;
 import ukma.speedyfix.domain.entity.UserEntity;
 import ukma.speedyfix.exception.NoSuchEntityException;
 import ukma.speedyfix.merger.UserMerger;
@@ -19,6 +24,7 @@ public class UserService implements MyService<UserEntity, UserEntity, Integer>, 
     private final MyValidator<UserEntity> validator;
     private final UserRepository repository;
     private final UserMerger merger;
+    private static final Logger logger = LogManager.getLogger(UserService.class);
 
     @Override
     public UserEntity getById(Integer id) {
@@ -31,6 +37,9 @@ public class UserService implements MyService<UserEntity, UserEntity, Integer>, 
 
     public Integer create(UserEntity view) {
         view = repository.saveAndFlush(view);
+        ThreadContext.put("userId", String.valueOf(view.getId()));
+        logger.info("Service");
+        ThreadContext.clearAll();
         return view.getId();
     }
 

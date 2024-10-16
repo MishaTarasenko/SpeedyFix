@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="WARN" packages="ukma.speedyfix.logging">
+    <appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout disableAnsi="false"
+                           pattern="%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}} %highlight{${LOG_LEVEL_PATTERN:-%5p}}{FATAL=red blink, ERROR=red, WARN=yellow bold, INFO=green, DEBUG=green bold, TRACE=blue} %style{}{magenta} [%M] %style{%40C}{cyan} %notEmpty{[%marker]} %notEmpty{[userId=%X{userId}]} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%xEx}" />
+        </Console>
+
+        <File name="MyFile" fileName="logs/app.log">
+            <PatternLayout pattern="%d{yyyy-mm-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </File>
+        <ExceptionAppender name="exceptionAppender">
+            <CustomJsonLayout />
+        </ExceptionAppender>
+    </appenders>
+
+    <loggers>
+        <root level="debug">
+            <appender-ref ref="Console" level="info"/>
+            <appender-ref ref="MyFile" level="error"/>
+            <appender-ref ref="exceptionAppender" />
+        </root>
+    </loggers>
+</configuration>
