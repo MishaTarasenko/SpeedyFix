@@ -14,6 +14,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+import static org.aspectj.weaver.tools.cache.SimpleCacheFactory.path;
+
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -29,6 +31,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
         String token = getJwtFromRequest(request);
+
+        if (path.contains("/public")) {
+            chain.doFilter(request, response);
+            return;
+        }
+
 
         if (token != null && jwtTokenProvider.validateToken(token)) {
             String username = jwtTokenProvider.getUsernameFromToken(token);

@@ -14,34 +14,33 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/customer")
 public class CustomerController {
 
     private final CustomerService customerService;
 
-    @PostMapping
+    @PostMapping("/public/api/customer")
     public ResponseEntity<Integer> createCustomer(@RequestBody CustomerView customer) {
         log.info("Creating customer: {}", customer);
         return ResponseEntity.ok(customerService.create(customer));
     }
 
-    @GetMapping
+    @GetMapping("/public/api/customer")
     public ResponseEntity<List<CustomerResponse>> findAll() {
         return ResponseEntity.ok(customerService.getListResponse());
     }
 
-    @GetMapping(path = "/{id}")
+    @GetMapping("/public/api/customer/{id}")
     public ResponseEntity<CustomerResponse> findById(@PathVariable("id") Integer id) {
         return ResponseEntity.ok(customerService.getResponseById(id));
     }
 
-    @PutMapping
+    @PutMapping("/user/api/customer")
         public ResponseEntity<Boolean> updateCustomer(@RequestBody CustomerView user) {
         log.info("Updating customer: {}", user);
         return ResponseEntity.ok(customerService.update(user));
     }
 
-    @DeleteMapping(path = "/{id}")
+    @DeleteMapping("/user/api/customer/{id}")
     public ResponseEntity<Boolean> deleteCustomer(@PathVariable Integer id) {
         log.info("Deleting customer with id: {}", id);
         return ResponseEntity.ok(customerService.delete(id));

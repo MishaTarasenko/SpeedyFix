@@ -13,7 +13,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/employee")
+@RequestMapping("/admin/api/employee")
 public class EmployeeController {
     private final EmployeeService employeeService;
 
@@ -23,7 +23,7 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.create(employee));
     }
 
-    @DeleteMapping(path = "/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteEmployee(@PathVariable Integer id) {
         log.info("Deleting employee with id: {}", id);
         return ResponseEntity.ok(employeeService.delete(id));
@@ -40,7 +40,7 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.getList());
     }
 
-    @GetMapping(path = "/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<EmployeeResponse> findById(@PathVariable("id") Integer id) {
         return ResponseEntity.ok(employeeService.getResponseById(id));
     }

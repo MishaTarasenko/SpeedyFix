@@ -13,39 +13,38 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/vehicle")
 public class VehicleController {
     private final VehicleService vehicleService;
 
-    @PostMapping
+    @PostMapping("/user/api/vehicle")
     public ResponseEntity<Integer> createVehicle(@RequestBody VehicleView vehicle) {
         log.info("Creating vehicle: {}", vehicle);
         return ResponseEntity.ok(vehicleService.create(vehicle));
     }
 
-    @DeleteMapping(path = "/{id}")
+    @DeleteMapping(path = "/user/api/vehicle/{id}")
     public ResponseEntity<Boolean> deleteVehicle(@PathVariable Integer id) {
         log.info("Deleting vehicle with id: {}", id);
         return ResponseEntity.ok(vehicleService.delete(id));
     }
 
-    @PutMapping
+    @PutMapping("/user/api/vehicle")
     public ResponseEntity<Boolean> updateVehicle(@RequestBody VehicleView vehicle) {
         log.info("Updating vehicle: {}", vehicle);
         return ResponseEntity.ok(vehicleService.update(vehicle));
     }
 
-    @GetMapping
+    @GetMapping("/auth/api/vehicle")
     public ResponseEntity<List<VehicleResponse>> findAll() {
         return ResponseEntity.ok(vehicleService.getListResponse());
     }
 
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = "/user/api/vehicle/{id}")
     public ResponseEntity<VehicleResponse> findById(@PathVariable("id") Integer id) {
         return ResponseEntity.ok(vehicleService.getResponseById(id));
     }
 
-    @GetMapping(path = "/owner/{id}")
+    @GetMapping(path = "/auth/api/vehicle/owner/{id}")
     public ResponseEntity<List<VehicleResponse>> findByOwner(@PathVariable("id") Integer id) {
         return ResponseEntity.ok(vehicleService.getVehiclesByCustomerId(id));
     }

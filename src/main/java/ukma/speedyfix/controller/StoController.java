@@ -8,7 +8,7 @@ import ukma.speedyfix.domain.response.InfoResponse;
 import ukma.speedyfix.service.info.StoService;
 
 @RestController
-@RequestMapping("/api/info")
+@RequestMapping("/public/api/info")
 public class StoController {
 
     private final StoService stoService;

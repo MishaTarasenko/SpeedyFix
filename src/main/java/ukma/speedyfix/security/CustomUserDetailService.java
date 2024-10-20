@@ -8,10 +8,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ukma.speedyfix.domain.entity.CustomerEntity;
 import ukma.speedyfix.domain.entity.EmployeeEntity;
-import ukma.speedyfix.domain.entity.UserEntity;
 import ukma.speedyfix.repositories.CustomerRepository;
 import ukma.speedyfix.repositories.EmployeeRepository;
-import ukma.speedyfix.repositories.UserRepository;
 
 import java.util.Collections;
 

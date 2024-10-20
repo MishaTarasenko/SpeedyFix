@@ -5,6 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.MarkerManager;
 import org.apache.logging.log4j.ThreadContext;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ukma.speedyfix.controller.UserController;
 import ukma.speedyfix.domain.entity.UserEntity;
@@ -36,6 +37,8 @@ public class UserService implements MyService<UserEntity, UserEntity, Integer>, 
     }
 
     public Integer create(UserEntity view) {
+        String encryptedPassword = new BCryptPasswordEncoder().encode(view.getPassword());
+        view.setPassword(encryptedPassword);
         view = repository.saveAndFlush(view);
         ThreadContext.put("userId", String.valueOf(view.getId()));
         logger.info("Service");

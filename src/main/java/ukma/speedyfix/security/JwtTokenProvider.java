@@ -1,9 +1,15 @@
 package ukma.speedyfix.security;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Date;
 
 @Component
@@ -12,14 +18,11 @@ public class JwtTokenProvider {
     @Value("${jwt.secret}")
     private String jwtSecret;
 
-    @Value("${jwt.expiration}")
-    private long jwtExpirationMs;
-
     public String generateToken(String username) {
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(new Date().getTime() + jwtExpirationMs))
+                .setExpiration(new Date(new Date().getTime() + 2 * 60 * 60 * 1000))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
@@ -40,5 +43,9 @@ public class JwtTokenProvider {
             e.printStackTrace();
             return false;
         }
+    }
+
+    private Instant genAccessExpirationDate() {
+        return LocalDateTime.now().plusYears(2).toInstant(ZoneOffset.of("+03:00"));
     }
 }
