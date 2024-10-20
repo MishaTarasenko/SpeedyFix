@@ -7,7 +7,7 @@ import ukma.speedyfix.domain.Weather;
 import ukma.speedyfix.service.weather.WeatherService;
 
 @RestController
-@RequestMapping(path = "/api")
+@RequestMapping(path = "/public/api")
 public class WeatherController {
     private final WeatherService weatherService;
 
