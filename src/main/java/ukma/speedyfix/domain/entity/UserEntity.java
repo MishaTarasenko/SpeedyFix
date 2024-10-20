@@ -43,4 +43,9 @@ public class UserEntity {
     @Pattern(regexp = "\\d{10}", message = "Telephone must be a 10-digit number")
     @Column(name = "telephone_number")
     private String telephoneNumber;
+
+    @NotBlank(message = "User password can't be blank")
+    @Size(max = 255, message = "User password size can't be more than 255 characters")
+    @Column(name = "password")
+    private String password;
 }
