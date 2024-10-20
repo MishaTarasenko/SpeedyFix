@@ -44,8 +44,4 @@ public class JwtTokenProvider {
             return false;
         }
     }
-
-    private Instant genAccessExpirationDate() {
-        return LocalDateTime.now().plusYears(2).toInstant(ZoneOffset.of("+03:00"));
-    }
 }
