@@ -8,9 +8,13 @@ import org.apache.logging.log4j.ThreadContext;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ukma.speedyfix.controller.UserController;
+import ukma.speedyfix.domain.entity.CustomerEntity;
+import ukma.speedyfix.domain.entity.EmployeeEntity;
 import ukma.speedyfix.domain.entity.UserEntity;
 import ukma.speedyfix.exception.NoSuchEntityException;
 import ukma.speedyfix.merger.UserMerger;
+import ukma.speedyfix.repositories.CustomerRepository;
+import ukma.speedyfix.repositories.EmployeeRepository;
 import ukma.speedyfix.repositories.UserRepository;
 import ukma.speedyfix.service.MyService;
 import ukma.speedyfix.service.MyValidator;
@@ -24,6 +28,8 @@ public class UserService implements MyService<UserEntity, UserEntity, Integer>, 
 
     private final MyValidator<UserEntity> validator;
     private final UserRepository repository;
+    private final EmployeeRepository employeeRepository;
+    private final CustomerRepository customerRepository;
     private final UserMerger merger;
     private static final Logger logger = LogManager.getLogger(UserService.class);
 
@@ -44,6 +50,18 @@ public class UserService implements MyService<UserEntity, UserEntity, Integer>, 
         logger.info("Service");
         ThreadContext.clearAll();
         return view.getId();
+    }
+
+    public String getUserRole(String email) {
+        EmployeeEntity employee = employeeRepository.findByEmail(email).orElse(null);
+        CustomerEntity customer = customerRepository.findByEmail(email).orElse(null);
+        if (employee != null) {
+            return "ADMIN";
+        } else if (customer != null) {
+            return "USER";
+        } else {
+            return "";
+        }
     }
 
     public boolean update(UserEntity view) {
