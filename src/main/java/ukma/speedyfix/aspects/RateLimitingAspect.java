@@ -6,6 +6,7 @@ import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import ukma.speedyfix.exception.RateLimitExceededException;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -37,7 +38,7 @@ public class RateLimitingAspect {
             userRequestCounts.put(userId, new AtomicInteger(1));
             userRequestTimestamps.put(userId, now);
         } else if (userCount.incrementAndGet() > REQUEST_LIMIT) {
-            throw new RuntimeException("Request limit exceeded for user " + userId);
+            throw new RateLimitExceededException("Request limit exceeded for user " + userId);
         }
     }
 }
