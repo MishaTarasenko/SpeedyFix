@@ -18,4 +18,9 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<String> handleNoSuchEntityException(NoSuchEntityException ex, WebRequest request) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(value = RateLimitExceededException.class)
+    public ResponseEntity<String> handleNoSuchEntityException(RateLimitExceededException ex, WebRequest request) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.TOO_MANY_REQUESTS);
+    }
 }

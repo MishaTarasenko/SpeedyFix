@@ -17,7 +17,7 @@ public class WeatherController {
 
     @GetMapping("/temperature")
     public String getTemperature() {
-        Weather weather = weatherService.getTodayTemperature();
+        Weather weather = weatherService.getTodayWeather();
         if (weather.getTemp() > 7) {
             return "Ми рекомендуємо літню гуму";
         } else {
