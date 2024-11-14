@@ -36,17 +36,6 @@ public class SecurityConfig {
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-                .formLogin(form -> form
-                        .loginPage("/public/loginPage")
-                        .defaultSuccessUrl("/home", true)
-                        .failureUrl("/public/loginPage?error=true")
-                )
-                .logout(logout -> logout
-                        .logoutUrl("/public/logout")
-                        .logoutSuccessUrl("/public/loginPage?logout=true")
-                        .invalidateHttpSession(true)
-                        .clearAuthentication(true)
                 );
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

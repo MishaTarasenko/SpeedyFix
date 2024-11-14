@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import ukma.speedyfix.exception.RateLimitExceededException;
 
@@ -19,7 +18,7 @@ public class RateLimitingAspect {
 
     private final ConcurrentHashMap<String, AtomicInteger> userRequestCounts = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, Instant> userRequestTimestamps = new ConcurrentHashMap<>();
-    private static final int REQUEST_LIMIT = 1;
+    private static final int REQUEST_LIMIT = 5;
 
     @Autowired
     private HttpServletRequest request;
@@ -40,5 +39,13 @@ public class RateLimitingAspect {
         } else if (userCount.incrementAndGet() > REQUEST_LIMIT) {
             throw new RateLimitExceededException("Request limit exceeded for user " + userId);
         }
+    }
+
+    public ConcurrentHashMap<String, AtomicInteger> getUserRequestCounts() {
+        return userRequestCounts;
+    }
+
+    public ConcurrentHashMap<String, Instant> getUserRequestTimestamps() {
+        return userRequestTimestamps;
     }
 }
