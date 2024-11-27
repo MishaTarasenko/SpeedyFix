@@ -21,7 +21,7 @@ public class CustomerController {
     private final CustomerService customerService;
     private final UserService userService;
 
-    @PostMapping("/public/api/customer")
+    @PostMapping("/public/api/createCustomer")
     public ResponseEntity<Integer> createCustomer(@RequestBody UserEntity user) {
         log.info("Creating customer: {}", user);
         Integer userId = userService.create(user);
