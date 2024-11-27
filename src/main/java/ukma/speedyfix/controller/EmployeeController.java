@@ -15,12 +15,11 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/admin/api/employee")
 public class EmployeeController {
     private final EmployeeService employeeService;
     private final UserService userService;
 
-    @PostMapping
+    @PostMapping("/admin/api/createEmployee")
     public ResponseEntity<Integer> createEmployee(@RequestBody EmployeeCreationWrapper wrapper) {
         log.info("Creating employee: {}", wrapper.getEmployee());
         Integer userId = userService.create(wrapper.getUser());
@@ -28,24 +27,24 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.create(wrapper.getEmployee()));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/api/employee/{id}")
     public ResponseEntity<Boolean> deleteEmployee(@PathVariable Integer id) {
         log.info("Deleting employee with id: {}", id);
         return ResponseEntity.ok(employeeService.delete(id));
     }
 
-    @PutMapping
+    @PutMapping("/admin/api/employee")
     public ResponseEntity<Boolean> updateEmployee(@RequestBody EmployeeView employee) {
         log.info("Updating employee: {}", employee);
         return ResponseEntity.ok(employeeService.update(employee));
     }
 
-    @GetMapping
+    @GetMapping("/admin/api/employee")
     public ResponseEntity<List<EmployeeResponse>> findAll() {
         return ResponseEntity.ok(employeeService.getList());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/admin/api/employee/{id}")
     public ResponseEntity<EmployeeResponse> findById(@PathVariable("id") Integer id) {
         return ResponseEntity.ok(employeeService.getResponseById(id));
     }
