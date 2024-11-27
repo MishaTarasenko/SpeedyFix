@@ -39,9 +39,6 @@ public class UserService implements MyService<UserEntity, UserEntity, Integer>, 
         String encryptedPassword = new BCryptPasswordEncoder().encode(view.getPassword());
         view.setPassword(encryptedPassword);
         view = repository.saveAndFlush(view);
-        ThreadContext.put("userId", String.valueOf(view.getId()));
-        logger.info("Service");
-        ThreadContext.clearAll();
         return view.getId();
     }
 
