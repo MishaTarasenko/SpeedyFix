@@ -9,5 +9,4 @@ class SpeedyFixApplicationTests {
     @Test
     void contextLoads() {
     }
-
 }

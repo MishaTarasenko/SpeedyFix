@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ukma.speedyfix.domain.EmployeeCreationWrapper;
 import ukma.speedyfix.domain.response.EmployeeResponse;
 import ukma.speedyfix.domain.view.EmployeeView;
 import ukma.speedyfix.service.employee.EmployeeService;
+import ukma.speedyfix.service.user.UserService;
 
 import java.util.List;
 
@@ -16,11 +18,14 @@ import java.util.List;
 @RequestMapping("/admin/api/employee")
 public class EmployeeController {
     private final EmployeeService employeeService;
+    private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<Integer> createEmployee(@RequestBody EmployeeView employee) {
-        log.info("Creating employee: {}", employee);
-        return ResponseEntity.ok(employeeService.create(employee));
+    public ResponseEntity<Integer> createEmployee(@RequestBody EmployeeCreationWrapper wrapper) {
+        log.info("Creating employee: {}", wrapper.getEmployee());
+        Integer userId = userService.create(wrapper.getUser());
+        wrapper.getEmployee().setUserId(userId);
+        return ResponseEntity.ok(employeeService.create(wrapper.getEmployee()));
     }
 
     @DeleteMapping("/{id}")

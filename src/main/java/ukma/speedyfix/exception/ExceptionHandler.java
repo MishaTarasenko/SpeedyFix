@@ -20,7 +20,12 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @org.springframework.web.bind.annotation.ExceptionHandler(value = RateLimitExceededException.class)
-    public ResponseEntity<String> handleNoSuchEntityException(RateLimitExceededException ex, WebRequest request) {
+    public ResponseEntity<String> handleRateLimitExceededException(RateLimitExceededException ex, WebRequest request) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.TOO_MANY_REQUESTS);
+    }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(value = FailedToSendEmailException.class)
+    public ResponseEntity<String> handleFailedToSendEmailException(FailedToSendEmailException ex, WebRequest request) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.SERVICE_UNAVAILABLE);
     }
 }

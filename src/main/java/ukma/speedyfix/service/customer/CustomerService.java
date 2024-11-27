@@ -35,8 +35,10 @@ public class CustomerService implements MyService<CustomerEntity, CustomerView, 
 
     @Override
     public CustomerEntity getById(Integer id) {
-        return repository.findById(id)
+        CustomerEntity entity = repository.findById(id)
                 .orElseThrow(() -> new NoSuchEntityException("Customer with id: " + id + " not found"));
+        validator.validForView(entity);
+        return entity;
     }
 
     @Override

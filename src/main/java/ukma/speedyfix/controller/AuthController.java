@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ukma.speedyfix.domain.entity.CustomerEntity;
 import ukma.speedyfix.domain.entity.EmployeeEntity;
 import ukma.speedyfix.domain.response.JwtResponse;
 import ukma.speedyfix.domain.view.LoginView;
+import ukma.speedyfix.repositories.CustomerRepository;
 import ukma.speedyfix.repositories.EmployeeRepository;
 import ukma.speedyfix.security.JwtTokenProvider;
 
@@ -26,6 +28,7 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final EmployeeRepository employeeRepository;
+    private final CustomerRepository customerRepository;
 
     @PostMapping("/login")
     public ResponseEntity<JwtResponse> authenticateUser(@RequestBody @Valid LoginView loginRequest) {
@@ -40,11 +43,12 @@ public class AuthController {
 
         String jwt = jwtTokenProvider.generateToken(((UserDetails) authentication.getPrincipal()).getUsername());
         EmployeeEntity employee = employeeRepository.findByEmail(loginRequest.getUsername()).orElse(null);
+        CustomerEntity customer = customerRepository.findByEmail(loginRequest.getUsername()).orElse(null);
 
         if (employee != null) {
-            return ResponseEntity.ok(new JwtResponse(jwt, "ADMIN"));
+            return ResponseEntity.ok(new JwtResponse(jwt, "ADMIN", employee.getId()));
         } else {
-            return ResponseEntity.ok(new JwtResponse(jwt, "USER"));
+            return ResponseEntity.ok(new JwtResponse(jwt, "USER", customer.getId()));
         }
     }
 
