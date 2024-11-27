@@ -39,7 +39,7 @@ public class CustomerController {
     }
 
     @PutMapping("/auth/api/customer")
-        public ResponseEntity<Boolean> updateCustomer(@RequestBody CustomerView user) {
+        public ResponseEntity<Boolean> updateCustomer(@RequestBody UserEntity user) {
         log.info("Updating customer: {}", user);
         return ResponseEntity.ok(customerService.update(user));
     }

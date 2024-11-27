@@ -26,7 +26,7 @@ public class CustomerEntity {
     private List<VehicleEntity> vehicles;
 
     @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity user;
 }

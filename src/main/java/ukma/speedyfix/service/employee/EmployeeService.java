@@ -8,6 +8,7 @@ import ukma.speedyfix.domain.view.EmployeeView;
 import ukma.speedyfix.exception.NoSuchEntityException;
 import ukma.speedyfix.merger.EmployeeMerger;
 import ukma.speedyfix.repositories.EmployeeRepository;
+import ukma.speedyfix.repositories.UserRepository;
 import ukma.speedyfix.service.MyService;
 import ukma.speedyfix.service.MyValidator;
 
@@ -19,6 +20,7 @@ public class EmployeeService implements MyService<EmployeeEntity, EmployeeView, 
 
     private final MyValidator<EmployeeEntity> validator;
     private final EmployeeRepository repository;
+    private final UserRepository userRepository;
     private final EmployeeMerger merger;
 
     public EmployeeResponse getResponseById(Integer id) {
@@ -57,8 +59,10 @@ public class EmployeeService implements MyService<EmployeeEntity, EmployeeView, 
     @Override
     public boolean delete(Integer id) {
         EmployeeEntity entity = getById(id);
+        Integer userId = entity.getUser().getId();
         validator.validForDelete(entity);
         repository.delete(entity);
+        userRepository.deleteById(userId);
         return true;
     }
 
