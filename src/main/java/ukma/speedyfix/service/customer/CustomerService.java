@@ -60,7 +60,10 @@ public class CustomerService implements MyService<CustomerEntity, CustomerView, 
         return false;
     }
 
-    public boolean update(UserEntity view) {
+    public boolean update(UserEntity view, Integer id) {
+        CustomerEntity entity = getById(id);
+        view.setId(entity.getUser().getId());
+        validator.validForUpdate(entity);
         return userService.update(view);
     }
 

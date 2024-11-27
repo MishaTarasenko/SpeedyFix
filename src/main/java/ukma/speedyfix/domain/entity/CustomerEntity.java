@@ -22,7 +22,7 @@ public class CustomerEntity {
     @Column(name = "id")
     private Integer id;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "owner")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
     private List<VehicleEntity> vehicles;
 
     @NotNull

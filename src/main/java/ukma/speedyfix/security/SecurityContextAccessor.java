@@ -5,19 +5,19 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import ukma.speedyfix.domain.AuthenticatedUser;
+import org.springframework.security.core.userdetails.User;
 
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SecurityContextAccessor {
 
-    private static AuthenticatedUser getAuthenticateUser() {
-        return (AuthenticatedUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    private static User getAuthenticateUser() {
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     public static String getBehalfOnEmail() {
-        return getAuthenticateUser().getBehalfOnEmail();
+        return getAuthenticateUser().getUsername();
     }
 
     public static String getRole() {

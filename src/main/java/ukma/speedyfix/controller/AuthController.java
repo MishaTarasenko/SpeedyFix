@@ -19,6 +19,7 @@ import ukma.speedyfix.domain.view.LoginView;
 import ukma.speedyfix.repositories.CustomerRepository;
 import ukma.speedyfix.repositories.EmployeeRepository;
 import ukma.speedyfix.security.JwtTokenProvider;
+import ukma.speedyfix.security.SecurityContextAccessor;
 
 @RestController
 @RequiredArgsConstructor
@@ -46,9 +47,9 @@ public class AuthController {
         CustomerEntity customer = customerRepository.findByEmail(loginRequest.getUsername()).orElse(null);
 
         if (employee != null) {
-            return ResponseEntity.ok(new JwtResponse(jwt, "ADMIN", employee.getId()));
+            return ResponseEntity.ok(new JwtResponse(jwt, SecurityContextAccessor.getRole(), employee.getId()));
         } else {
-            return ResponseEntity.ok(new JwtResponse(jwt, "USER", customer.getId()));
+            return ResponseEntity.ok(new JwtResponse(jwt, SecurityContextAccessor.getRole(), customer.getId()));
         }
     }
 
