@@ -61,16 +61,6 @@ public class OperationOrderController {
         return ResponseEntity.ok(service.getListByStatus(status));
     }
 
-    @PutMapping(path = "/auth/api/operation/order/{orderId}/operation/{operationId}/{isAdd}")
-    public ResponseEntity<Boolean> operateOperation(@PathVariable Integer orderId, @PathVariable Integer operationId, @PathVariable boolean isAdd) {
-        return ResponseEntity.ok(service.operateOperation(orderId, operationId, isAdd));
-    }
-
-    @PutMapping(path = "/auth/api/operation/order/{orderId}/employee/{employeeId}/{isAdd}")
-    public ResponseEntity<Boolean> operateEmployee(@PathVariable Integer orderId, @PathVariable Integer employeeId, @PathVariable boolean isAdd) {
-        return ResponseEntity.ok(service.operateEmployee(orderId, employeeId, isAdd));
-    }
-
     @PutMapping(path = "/auth/api/operation/order/{id}/new/{status}")
     public ResponseEntity<Boolean> changeStatusOfOperation(@PathVariable Integer id, @PathVariable OperationOrderStatusType status) {
         return ResponseEntity.ok(service.changeStatusOfOrder(id, status));

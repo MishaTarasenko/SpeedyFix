@@ -61,7 +61,7 @@ public class OperationService implements MyService<OperationEntity, OperationVie
         OperationEntity entity = getById(id);
         validator.validForDelete(entity);
         repository.delete(entity);
-        return false;
+        return true;
     }
 
     @Override
