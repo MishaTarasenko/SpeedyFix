@@ -47,7 +47,7 @@ public class OperationOrderController {
     }
 
     @GetMapping(path = "/admin/api/operation/order/employee/{id}")
-    public ResponseEntity<List<OperationOrderResponse>> findAllByEmployeeById(@PathVariable("id") Integer id) {
+    public ResponseEntity<List<OperationOrderResponse>> findAllByEmployeeId(@PathVariable("id") Integer id) {
         return ResponseEntity.ok(service.getListByEmployeeId(id));
     }
 
@@ -56,7 +56,7 @@ public class OperationOrderController {
         return ResponseEntity.ok(service.getListByStatusAndCustomerId(status, id));
     }
 
-    @GetMapping(path = "/auth/api/operation/order/{status}")
+    @GetMapping(path = "/admin/api/operation/order/{status}")
     public ResponseEntity<List<OperationOrderResponse>> findAllByStatus(@PathVariable("status")OperationOrderStatusType status) {
         return ResponseEntity.ok(service.getListByStatus(status));
     }
