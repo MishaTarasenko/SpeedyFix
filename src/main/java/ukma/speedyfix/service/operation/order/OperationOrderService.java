@@ -119,42 +119,6 @@ public class OperationOrderService implements MyService<OperationOrderEntity, Op
         return true;
     }
 
-    @Override
-    public boolean operateOperation(Integer operationOrderId, Integer operationId, boolean isAdd) {
-        OperationOrderEntity entity = getById(operationOrderId);
-        Set<OperationEntity> operations = entity.getOperations();
-        OperationEntity operation = operationRepository.findById(operationId).orElseThrow(
-                () -> new NoSuchEntityException("Operation with id " + operationId + " not found")
-        );
-        if (isAdd) {
-            operations.add(operation);
-        } else {
-            operations.remove(operation);
-        }
-        entity.setOperations(operations);
-        validator.validForUpdate(entity);
-        repository.saveAndFlush(entity);
-        return true;
-    }
-
-    @Override
-    public boolean operateEmployee(Integer operationOrderId, Integer employeeId, boolean isAdd) {
-        OperationOrderEntity entity = getById(operationOrderId);
-        Set<EmployeeEntity> employees = entity.getEmployee();
-        EmployeeEntity employee = employeeRepository.findById(employeeId).orElseThrow(
-                () -> new NoSuchEntityException("Employee with id " + employeeId + " not found")
-        );
-        if (isAdd) {
-            employees.add(employee);
-        } else {
-            employees.remove(employee);
-        }
-        entity.setEmployee(employees);
-        validator.validForUpdate(entity);
-        repository.saveAndFlush(entity);
-        return true;
-    }
-
     private OperationOrderResponse buildResponse(OperationOrderEntity entity) {
         return OperationOrderResponse.builder()
                 .id(entity.getId())
