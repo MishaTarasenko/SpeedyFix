@@ -4,16 +4,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import ukma.speedyfix.domain.EmployeeCreationWrapper;
-import ukma.speedyfix.domain.entity.UserEntity;
-import ukma.speedyfix.domain.view.EmployeeView;
+import org.springframework.test.web.servlet.MvcResult;
+import ukma.speedyfix.domain.view.OperationView;
 import ukma.speedyfix.repositories.*;
 
+import java.util.Set;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class OperationCRUDTest extends BaseTest {
+class OperationCRUDTest extends BaseTest {
 
     @Autowired
     public OperationCRUDTest(EmployeeRepository employeeRepository, CustomerRepository customerRepository,
@@ -22,107 +22,165 @@ public class OperationCRUDTest extends BaseTest {
         super(employeeRepository, customerRepository, userRepository, vehicleRepository, operationRepository, mockMvc);
     }
 
-//    @Test
-//    void adminCanCreateEmployeeTest() throws Exception {
-//        mockMvc.perform(post("/admin/api/employee")
-//                        .header("Authorization", "Bearer " + loginLikeAdmin())
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(NEW_EMPLOYEE_JSON))
-//                .andExpect(status().isOk());
-//    }
-//
-//    @Test
-//    void mechanicCantCreateEmployeeTest() throws Exception {
-//        mockMvc.perform(post("/admin/api/employee")
-//                        .header("Authorization", "Bearer " + loginLikeMechanic())
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(NEW_EMPLOYEE_JSON))
-//                .andExpect(status().is4xxClientError());
-//    }
-//
-//    @Test
-//    void customerCantCreateEmployeeTest() throws Exception {
-//        mockMvc.perform(post("/admin/api/employee")
-//                        .header("Authorization", "Bearer " + loginLikeAnotherCustomer())
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(NEW_EMPLOYEE_JSON))
-//                .andExpect(status().is4xxClientError());
-//    }
-//
-//    @Test
-//    void adminCanDeleteEmployeeTest() throws Exception {
-//        Integer id = employeeRepository.findAll().getFirst().getId();
-//
-//        mockMvc.perform(delete("/admin/api/employee/" + id)
-//                        .header("Authorization", "Bearer " + loginLikeAdmin())
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk());
-//    }
-//
-//    @Test
-//    void mechanicCantDeleteEmployeeTest() throws Exception {
-//        Integer id = employeeRepository.findAll().getFirst().getId();
-//
-//        mockMvc.perform(delete("/admin/api/employee/" + id)
-//                        .header("Authorization", "Bearer " + loginLikeMechanic())
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().is4xxClientError());
-//    }
-//
-//    @Test
-//    void customerCantDeleteEmployeeTest() throws Exception {
-//        Integer id = employeeRepository.findAll().getFirst().getId();
-//
-//        mockMvc.perform(delete("/admin/api/employee/" + id)
-//                        .header("Authorization", "Bearer " + loginLikeAnotherCustomer())
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().is4xxClientError());
-//    }
-//
-//    @Test
-//    void adminCanUpdateEmployeeTest() throws Exception {
-//        EmployeeCreationWrapper wrapper = new EmployeeCreationWrapper(
-//                new EmployeeView(mechanic.getId(), null, null, null),
-//                new UserEntity(null, "Oleksiy", null, null, null, null)
-//        );
-//        String json = objectMapper.writeValueAsString(wrapper);
-//
-//        mockMvc.perform(put("/admin/api/employee")
-//                        .header("Authorization", "Bearer " + loginLikeAdmin())
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(json))
-//                .andExpect(status().isOk());
-//    }
-//
-//    @Test
-//    void mechanicCantUpdateEmployeeTest() throws Exception {
-//        EmployeeCreationWrapper wrapper = new EmployeeCreationWrapper(
-//                new EmployeeView(mechanic.getId(), null, null, null),
-//                new UserEntity(null, "Oleksiy", null, null, null, null)
-//        );
-//        String json = objectMapper.writeValueAsString(wrapper);
-//
-//        mockMvc.perform(put("/admin/api/employee")
-//                        .header("Authorization", "Bearer " + loginLikeMechanic())
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(json))
-//                .andExpect(status().is4xxClientError());
-//    }
-//
-//    @Test
-//    void customerCantUpdateEmployeeTest() throws Exception {
-//        EmployeeCreationWrapper wrapper = new EmployeeCreationWrapper(
-//                new EmployeeView(mechanic.getId(), null, null, null),
-//                new UserEntity(null, "Oleksiy", null, null, null, null)
-//        );
-//        String json = objectMapper.writeValueAsString(wrapper);
-//
-//        mockMvc.perform(put("/admin/api/employee")
-//                        .header("Authorization", "Bearer " + loginLikeAnotherCustomer())
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(json))
-//                .andExpect(status().is4xxClientError());
-//    }
+    @Test
+    void adminCanCreateOperationTest() throws Exception {
+        OperationView operation = new OperationView(null, "Wash", "Wash your car", 19.99, Set.of(mechanic.getId()));
+
+        mockMvc.perform(post("/admin/api/operation")
+                        .header("Authorization", "Bearer " + loginLikeAdmin())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(operation)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void mechanicCantCreateOperationTest() throws Exception {
+        OperationView operation = new OperationView(null, "Wash", "Wash your car", 19.99, Set.of(mechanic.getId()));
+
+        mockMvc.perform(post("/admin/api/operation")
+                        .header("Authorization", "Bearer " + loginLikeMechanic())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(operation)))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    void customerCantCreateOperationTest() throws Exception {
+        OperationView operation = new OperationView(null, "Wash", "Wash your car", 19.99, Set.of(mechanic.getId()));
+
+        mockMvc.perform(post("/admin/api/operation")
+                        .header("Authorization", "Bearer " + loginLikeAnotherCustomer())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(operation)))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    void adminCanDeleteEmployeeTest() throws Exception {
+        OperationView operation = new OperationView(null, "Wash", "Wash your car", 19.99, Set.of(mechanic.getId()));
+
+        MvcResult result = mockMvc.perform(post("/admin/api/operation")
+                        .header("Authorization", "Bearer " + loginLikeAdmin())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(operation)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String operationId = result.getResponse().getContentAsString();
+
+        mockMvc.perform(delete("/admin/api/operation/" + operationId)
+                        .header("Authorization", "Bearer " + loginLikeAdmin())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void mechanicCantDeleteOperationTest() throws Exception {
+        OperationView operation = new OperationView(null, "Wash", "Wash your car", 19.99, Set.of(mechanic.getId()));
+
+        MvcResult result = mockMvc.perform(post("/admin/api/operation")
+                        .header("Authorization", "Bearer " + loginLikeAdmin())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(operation)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String operationId = result.getResponse().getContentAsString();
+
+        mockMvc.perform(delete("/admin/api/operation/" + operationId)
+                        .header("Authorization", "Bearer " + loginLikeMechanic())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    void customerCantDeleteOperationTest() throws Exception {
+        OperationView operation = new OperationView(null, "Wash", "Wash your car", 19.99, Set.of(mechanic.getId()));
+
+        MvcResult result = mockMvc.perform(post("/admin/api/operation")
+                        .header("Authorization", "Bearer " + loginLikeAdmin())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(operation)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String operationId = result.getResponse().getContentAsString();
+
+        mockMvc.perform(delete("/admin/api/operation/" + operationId)
+                        .header("Authorization", "Bearer " + loginLikeAnotherCustomer())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    void adminCanUpdateEmployeeTest() throws Exception {
+        OperationView operation = new OperationView(null, "Wash", "Wash your car", 19.99, Set.of(mechanic.getId()));
+
+        MvcResult result = mockMvc.perform(post("/admin/api/operation")
+                        .header("Authorization", "Bearer " + loginLikeAdmin())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(operation)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String operationId = result.getResponse().getContentAsString();
+
+        operation.setId(Integer.valueOf(operationId));
+        operation.setPrice(100.0);
+
+        mockMvc.perform(put("/admin/api/operation")
+                        .header("Authorization", "Bearer " + loginLikeAdmin())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(operation)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void mechanicCantUpdateOperationTest() throws Exception {
+        OperationView operation = new OperationView(null, "Wash", "Wash your car", 19.99, Set.of(mechanic.getId()));
+
+        MvcResult result = mockMvc.perform(post("/admin/api/operation")
+                        .header("Authorization", "Bearer " + loginLikeAdmin())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(operation)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String operationId = result.getResponse().getContentAsString();
+
+        operation.setId(Integer.valueOf(operationId));
+        operation.setPrice(100.0);
+
+        mockMvc.perform(put("/admin/api/operation")
+                        .header("Authorization", "Bearer " + loginLikeMechanic())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(operation)))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    void customerCantUpdateOperationTest() throws Exception {
+        OperationView operation = new OperationView(null, "Wash", "Wash your car", 19.99, Set.of(mechanic.getId()));
+
+        MvcResult result = mockMvc.perform(post("/admin/api/operation")
+                        .header("Authorization", "Bearer " + loginLikeAdmin())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(operation)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String operationId = result.getResponse().getContentAsString();
+
+        operation.setId(Integer.valueOf(operationId));
+        operation.setPrice(100.0);
+
+        mockMvc.perform(put("/admin/api/operation")
+                        .header("Authorization", "Bearer " + loginLikeAnotherCustomer())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(operation)))
+                .andExpect(status().is4xxClientError());
+    }
+
 //
 //    @Test
 //    void allCanGetAllEmployees() throws Exception {
@@ -138,19 +196,4 @@ public class OperationCRUDTest extends BaseTest {
 //                .andExpect(status().isOk());
 //    }
 //
-//    private static final String NEW_EMPLOYEE_JSON = """
-//            {
-//                "employee": {
-//                    "position": "Wheel master",
-//                    "type": "MECHANIC"
-//                },
-//                "user": {
-//                   "firstName": "John",
-//                    "lastName": "Doe",
-//                    "email": "john.doe@example.com",
-//                    "telephoneNumber": "0506078710",
-//                    "password": "password123"
-//                }
-//            }
-//        """;
 }

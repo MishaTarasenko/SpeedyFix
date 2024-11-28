@@ -111,6 +111,7 @@ public class BaseTest {
 
     @AfterEach
     public void clear() {
+        operationRepository.deleteAll();
         vehicleRepository.deleteAll();
         employeeRepository.deleteAll();
         customerRepository.deleteAll();

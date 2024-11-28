@@ -75,7 +75,7 @@ public class OperationOrderService implements MyService<OperationOrderEntity, Op
     }
 
     public List<OperationOrderResponse> getListByStatus(OperationOrderStatusType status) {
-        if (!SecurityContextAccessor.getRole().equals("ROLE_ADMIN") || !SecurityContextAccessor.getRole().equals("ROLE_MECHANIC")) {
+        if (!SecurityContextAccessor.getRole().equals("ROLE_ADMIN") && !SecurityContextAccessor.getRole().equals("ROLE_MECHANIC")) {
             throw new ValidationException("You do not have permission");
         }
         return repository.findAllByOrderStatus(status).stream().map(this::buildResponse).toList();
@@ -84,7 +84,7 @@ public class OperationOrderService implements MyService<OperationOrderEntity, Op
     @Override
     public Integer create(OperationOrderView view) {
         OperationOrderEntity entity = new OperationOrderEntity();
-        merger.merge(entity, view);
+        merger.mergeCreate(entity, view);
         validator.validForCreate(entity);
         return repository.save(entity).getId();
     }

@@ -10,7 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ukma.speedyfix.domain.type.EmployeeType;
 
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Data
@@ -41,5 +41,5 @@ public class EmployeeEntity {
     private UserEntity user;
 
     @ManyToMany(mappedBy = "employees", fetch = FetchType.EAGER)
-    private Set<OperationEntity> operations;
+    private List<OperationEntity> operations;
 }
