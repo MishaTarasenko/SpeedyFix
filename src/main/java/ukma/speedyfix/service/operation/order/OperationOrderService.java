@@ -55,6 +55,14 @@ public class OperationOrderService implements MyService<OperationOrderEntity, Op
         return repository.findAllByEmployeeId(employeeId).stream().map(this::buildResponse).toList();
     }
 
+    public List<OperationOrderResponse> getListByStatusAndCustomerId(OperationOrderStatusType status, Integer customerId) {
+        return repository.findAllByOrderStatusAndCustomerId(status, customerId).stream().map(this::buildResponse).toList();
+    }
+
+    public List<OperationOrderResponse> getListByStatus(OperationOrderStatusType status) {
+        return repository.findAllByOrderStatus(status).stream().map(this::buildResponse).toList();
+    }
+
     @Override
     public Integer create(OperationOrderView view) {
         OperationOrderEntity entity = new OperationOrderEntity();

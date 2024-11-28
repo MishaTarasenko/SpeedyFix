@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ukma.speedyfix.domain.response.OperationOrderResponse;
+import ukma.speedyfix.domain.type.OperationOrderStatusType;
 import ukma.speedyfix.domain.view.OperationOrderView;
 import ukma.speedyfix.service.operation.order.OperationOrderService;
 
@@ -50,6 +51,16 @@ public class OperationOrderController {
         return ResponseEntity.ok(service.getListByEmployeeId(id));
     }
 
+    @GetMapping(path = "/auth/api/operation/order/{status}/customer/{id}")
+    public ResponseEntity<List<OperationOrderResponse>> findAllByStatusAndCustomerId(@PathVariable("status")OperationOrderStatusType status, @PathVariable("id") Integer id) {
+        return ResponseEntity.ok(service.getListByStatusAndCustomerId(status, id));
+    }
+
+    @GetMapping(path = "/auth/api/operation/order/{status}")
+    public ResponseEntity<List<OperationOrderResponse>> findAllByStatus(@PathVariable("status")OperationOrderStatusType status) {
+        return ResponseEntity.ok(service.getListByStatus(status));
+    }
+
     @PutMapping(path = "/auth/api/operation/order/{orderId}/operation/{operationId}/{isAdd}")
     public ResponseEntity<Boolean> operateOperation(@PathVariable Integer orderId, @PathVariable Integer operationId, @PathVariable boolean isAdd) {
         return ResponseEntity.ok(service.operateOperation(orderId, operationId, isAdd));
@@ -58,5 +69,10 @@ public class OperationOrderController {
     @PutMapping(path = "/auth/api/operation/order/{orderId}/employee/{employeeId}/{isAdd}")
     public ResponseEntity<Boolean> operateEmployee(@PathVariable Integer orderId, @PathVariable Integer employeeId, @PathVariable boolean isAdd) {
         return ResponseEntity.ok(service.operateEmployee(orderId, employeeId, isAdd));
+    }
+
+    @PutMapping(path = "/auth/api/operation/order/{id}/new/{status}")
+    public ResponseEntity<Boolean> changeStatusOfOperation(@PathVariable Integer id, @PathVariable OperationOrderStatusType status) {
+        return ResponseEntity.ok(service.changeStatusOfOrder(id, status));
     }
 }
