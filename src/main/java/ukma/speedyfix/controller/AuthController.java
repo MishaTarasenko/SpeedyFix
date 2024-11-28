@@ -48,9 +48,10 @@ public class AuthController {
 
         if (employee != null) {
             return ResponseEntity.ok(new JwtResponse(jwt, SecurityContextAccessor.getRole(), employee.getId()));
-        } else {
+        } else if (customer != null) {
             return ResponseEntity.ok(new JwtResponse(jwt, SecurityContextAccessor.getRole(), customer.getId()));
         }
+        return ResponseEntity.ok(new JwtResponse(jwt, SecurityContextAccessor.getRole(), null));
     }
 
     @PostMapping("/logout")

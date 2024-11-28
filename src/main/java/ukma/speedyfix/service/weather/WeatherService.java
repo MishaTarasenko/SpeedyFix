@@ -14,8 +14,8 @@ import ukma.speedyfix.domain.Weather;
 @RequiredArgsConstructor
 public class WeatherService {
 
-    private final String API_KEY = "6f807b41cbe1c8f410398fc4403fdd2c";
-    private final String BASE_URL = "http://api.openweathermap.org/data/2.5/weather?q=Kyiv&appid={apiKey}&units=metric";
+    private static final String API_KEY = "6f807b41cbe1c8f410398fc4403fdd2c";
+    private static final String BASE_URL = "http://api.openweathermap.org/data/2.5/weather?q=Kyiv&appid={apiKey}&units=metric";
 
     private final ObjectMapper objectMapper;
 

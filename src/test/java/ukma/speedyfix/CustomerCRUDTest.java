@@ -23,7 +23,7 @@ class CustomerCRUDTest extends BaseTest {
 
     @Test
     void testCreate() throws Exception {
-        mockMvc.perform(post("/public/api/customer")
+        mockMvc.perform(post("/public/api/createCustomer")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(NEW_CUSTOMER_JSON))
                 .andExpect(status().isOk());
@@ -85,7 +85,7 @@ class CustomerCRUDTest extends BaseTest {
 
     @Test
     void customerCantViewAnotherCustomerById() throws Exception {
-        MvcResult result = mockMvc.perform(post("/public/api/customer")
+        MvcResult result = mockMvc.perform(post("/public/api/createCustomer")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(NEW_CUSTOMER_JSON))
                 .andExpect(status().isOk())

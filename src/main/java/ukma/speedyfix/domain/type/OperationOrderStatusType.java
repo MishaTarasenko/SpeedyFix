@@ -6,5 +6,5 @@ public enum OperationOrderStatusType {
     IN_PROGRESS,
     ON_HOLD,
     COMPLETED,
-    CANCELLED;
+    CANCELLED
 }

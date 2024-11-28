@@ -10,9 +10,6 @@ public class EmployeeCreationWrapper {
     private EmployeeView employee;
     private UserEntity user;
 
-    public EmployeeCreationWrapper() {
-    }
-
     public EmployeeCreationWrapper(EmployeeView employee, UserEntity user) {
         this.employee = employee;
         this.user = user;

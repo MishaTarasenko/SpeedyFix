@@ -46,7 +46,7 @@ public class BaseTest {
 
     public ObjectMapper objectMapper = new ObjectMapper()
             .registerModule(new JavaTimeModule())
-            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);;
+            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired

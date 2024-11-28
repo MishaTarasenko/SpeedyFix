@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(StoController.class)
-public class StoInfoTest {
+class StoInfoTest {
     @Autowired
     private MockMvc mockMvc;
 

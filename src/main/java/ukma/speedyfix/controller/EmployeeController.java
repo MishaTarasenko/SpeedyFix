@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ukma.speedyfix.domain.EmployeeCreationWrapper;
 import ukma.speedyfix.domain.response.EmployeeResponse;
-import ukma.speedyfix.domain.view.EmployeeView;
 import ukma.speedyfix.service.employee.EmployeeService;
 import ukma.speedyfix.service.user.UserService;
 

@@ -10,7 +10,6 @@ import ukma.speedyfix.domain.view.CustomerView;
 import ukma.speedyfix.exception.NoSuchEntityException;
 import ukma.speedyfix.merger.CustomerMerger;
 import ukma.speedyfix.repositories.CustomerRepository;
-import ukma.speedyfix.repositories.UserRepository;
 import ukma.speedyfix.repositories.VehicleRepository;
 import ukma.speedyfix.service.MyService;
 import ukma.speedyfix.service.MyValidator;
@@ -27,7 +26,6 @@ public class CustomerService implements MyService<CustomerEntity, CustomerView, 
     private final UserService userService;
     private final VehicleRepository vehicleRepository;
     private final CustomerMerger merger;
-    private final UserRepository userRepository;
 
     public CustomerResponse getResponseById(Integer id) {
         return buildResponse(getById(id));
