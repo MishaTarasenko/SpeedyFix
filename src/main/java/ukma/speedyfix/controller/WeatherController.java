@@ -19,9 +19,9 @@ public class WeatherController {
     public String getTemperature() {
         Weather weather = weatherService.getTodayWeather();
         if (weather.getTemp() > 7) {
-            return "Ми рекомендуємо літню гуму";
+            return "summer tires";
         } else {
-            return "Ми рекомендуємо зимню гуму";
+            return "winter tires";
         }
     }
 }
