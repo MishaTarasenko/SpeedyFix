@@ -10,7 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ukma.speedyfix.domain.type.EmployeeType;
 
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Data
@@ -36,10 +36,10 @@ public class EmployeeEntity {
     private EmployeeType type;
 
     @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity user;
 
     @ManyToMany(mappedBy = "employees", fetch = FetchType.EAGER)
-    private Set<OperationEntity> operations;
+    private List<OperationEntity> operations;
 }

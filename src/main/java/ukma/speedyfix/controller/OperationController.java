@@ -56,9 +56,4 @@ public class OperationController {
     public ResponseEntity<List<OperationResponse>> findAll() {
         return ResponseEntity.ok(operationService.getListResponse());
     }
-
-    @GetMapping(path = "public/api/operation/employee/{id}")
-    public ResponseEntity<List<OperationResponse>> findAllByEmployeeById(@PathVariable("id") Integer id) {
-        return ResponseEntity.ok(operationService.getAllOperationsByEmployeeId(id));
-    }
 }

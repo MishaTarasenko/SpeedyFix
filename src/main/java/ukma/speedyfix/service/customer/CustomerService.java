@@ -3,6 +3,7 @@ package ukma.speedyfix.service.customer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ukma.speedyfix.domain.entity.CustomerEntity;
+import ukma.speedyfix.domain.entity.UserEntity;
 import ukma.speedyfix.domain.entity.VehicleEntity;
 import ukma.speedyfix.domain.response.CustomerResponse;
 import ukma.speedyfix.domain.view.CustomerView;
@@ -12,6 +13,7 @@ import ukma.speedyfix.repositories.CustomerRepository;
 import ukma.speedyfix.repositories.VehicleRepository;
 import ukma.speedyfix.service.MyService;
 import ukma.speedyfix.service.MyValidator;
+import ukma.speedyfix.service.user.UserService;
 
 import java.util.List;
 
@@ -21,6 +23,7 @@ public class CustomerService implements MyService<CustomerEntity, CustomerView, 
 
     private final MyValidator<CustomerEntity> validator;
     private final CustomerRepository repository;
+    private final UserService userService;
     private final VehicleRepository vehicleRepository;
     private final CustomerMerger merger;
 
@@ -52,20 +55,25 @@ public class CustomerService implements MyService<CustomerEntity, CustomerView, 
 
     @Override
     public boolean update(CustomerView view) {
-        CustomerEntity entity = getById(view.getId());
-        merger.merge(entity, view);
+        return false;
+    }
+
+    public boolean update(UserEntity view, Integer id) {
+        CustomerEntity entity = getById(id);
+        view.setId(entity.getUser().getId());
         validator.validForUpdate(entity);
-        repository.saveAndFlush(entity);
-        return true;
+        return userService.update(view);
     }
 
     @Override
     public boolean delete(Integer id) {
         CustomerEntity entity = getById(id);
+        Integer userId = entity.getUser().getId();
         validator.validForDelete(entity);
         List<VehicleEntity> vehicles = vehicleRepository.findAllByOwner(entity);
         vehicleRepository.deleteAll(vehicles);
         repository.delete(entity);
+        userService.delete(userId);
         return true;
     }
 

@@ -5,18 +5,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import ukma.speedyfix.domain.type.EmployeeType;
-import ukma.speedyfix.repositories.EmployeeRepository;
 
 import java.io.IOException;
-import java.util.List;
 
 import static org.aspectj.weaver.tools.cache.SimpleCacheFactory.path;
 
@@ -25,13 +21,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final UserDetailsService userDetailsService;
-    private final EmployeeRepository employeeRepository;
 
-    public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider, UserDetailsService userDetailsService,
-                                   EmployeeRepository employeeRepository) {
+    public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider, UserDetailsService userDetailsService) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.userDetailsService = userDetailsService;
-        this.employeeRepository = employeeRepository;
     }
 
     @Override
@@ -50,7 +43,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
             var authentication = new UsernamePasswordAuthenticationToken(
-                    userDetails, null, List.of(getAuthority(username)));
+                    userDetails, null, userDetails.getAuthorities());
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -65,17 +58,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return bearerToken.substring(7);
         }
         return null;
-    }
-
-    private SimpleGrantedAuthority getAuthority(String email) {
-        if (employeeRepository.findByEmail(email).isPresent()) {
-            if (employeeRepository.findByEmail(email).get().getType() == EmployeeType.ADMIN) {
-                return new SimpleGrantedAuthority("ROLE_ADMIN");
-            } else {
-                return new SimpleGrantedAuthority("ROLE_MECHANIC");
-            }
-        } else {
-            return new SimpleGrantedAuthority("ROLE_USER");
-        }
     }
 }

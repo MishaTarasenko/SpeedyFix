@@ -1,6 +1,7 @@
 package ukma.speedyfix.scheduled;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import ukma.speedyfix.aspects.RateLimitingAspect;
@@ -9,6 +10,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
 @Component
+@Profile("!test")
 public class RateLimitingCleanupTask {
 
     private final RateLimitingAspect rateLimitingAspect;

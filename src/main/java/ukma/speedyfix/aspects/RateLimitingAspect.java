@@ -3,25 +3,30 @@ package ukma.speedyfix.aspects;
 import jakarta.servlet.http.HttpServletRequest;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import ukma.speedyfix.exception.RateLimitExceededException;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Aspect
 @Component
+@Profile("!test")
 public class RateLimitingAspect {
 
     private final ConcurrentHashMap<String, AtomicInteger> userRequestCounts = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, Instant> userRequestTimestamps = new ConcurrentHashMap<>();
     private static final int REQUEST_LIMIT = 5;
 
-    @Autowired
-    private HttpServletRequest request;
+    private final HttpServletRequest request;
+
+    public RateLimitingAspect(HttpServletRequest request) {
+        this.request = request;
+    }
 
     @Before("execution(* ukma.speedyfix.controller.AuthController.authenticateUser(..))")
     public void rateLimit() {
@@ -41,11 +46,11 @@ public class RateLimitingAspect {
         }
     }
 
-    public ConcurrentHashMap<String, AtomicInteger> getUserRequestCounts() {
+    public ConcurrentMap<String, AtomicInteger> getUserRequestCounts() {
         return userRequestCounts;
     }
 
-    public ConcurrentHashMap<String, Instant> getUserRequestTimestamps() {
+    public ConcurrentMap<String, Instant> getUserRequestTimestamps() {
         return userRequestTimestamps;
     }
 }

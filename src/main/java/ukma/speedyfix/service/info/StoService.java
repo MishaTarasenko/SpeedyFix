@@ -17,7 +17,6 @@ public class StoService {
 
     @Cacheable(cacheNames = "info")
     public InfoResponse getInfo() {
-        System.out.println("Tatatatatata");
         return InfoResponse.builder()
                 .startTime(stoInfo.getOpeningHours())
                 .endTime(stoInfo.getClosingHours())

@@ -9,10 +9,12 @@ import ukma.speedyfix.domain.response.OperationOrderResponse;
 import ukma.speedyfix.domain.type.OperationOrderStatusType;
 import ukma.speedyfix.domain.view.OperationOrderView;
 import ukma.speedyfix.exception.NoSuchEntityException;
+import ukma.speedyfix.exception.ValidationException;
 import ukma.speedyfix.merger.OperationOrderMerger;
 import ukma.speedyfix.repositories.EmployeeRepository;
 import ukma.speedyfix.repositories.OperationOrderRepository;
 import ukma.speedyfix.repositories.OperationRepository;
+import ukma.speedyfix.security.SecurityContextAccessor;
 import ukma.speedyfix.service.MyService;
 import ukma.speedyfix.service.MyValidator;
 import ukma.speedyfix.service.customer.CustomerService;
@@ -38,9 +40,11 @@ public class OperationOrderService implements MyService<OperationOrderEntity, Op
 
     @Override
     public OperationOrderEntity getById(Integer id) {
-            return repository.findById(id).orElseThrow(
-                    () -> new NoSuchEntityException("Operation order with id " + id + " not found")
-            );
+        OperationOrderEntity entity = repository.findById(id).orElseThrow(
+                () -> new NoSuchEntityException("Operation order with id " + id + " not found")
+        );
+        validator.validForView(entity);
+        return entity;
     }
 
     public OperationOrderResponse getResponseById(Integer id) {
@@ -48,17 +52,39 @@ public class OperationOrderService implements MyService<OperationOrderEntity, Op
     }
 
     public List<OperationOrderResponse> getListByCustomerId(Integer customerId) {
-        return repository.findAllByCustomerId(customerId).stream().map(this::buildResponse).toList();
+        List<OperationOrderEntity> response = repository.findAllByCustomerId(customerId);
+        for (OperationOrderEntity operationOrderEntity : response) {
+            validator.validForView(operationOrderEntity);
+        }
+        return response.stream().map(this::buildResponse).toList();
     }
 
     public List<OperationOrderResponse> getListByEmployeeId(Integer employeeId) {
+        if (!SecurityContextAccessor.getRole().equals("ROLE_ADMIN") && !SecurityContextAccessor.getRole().equals("ROLE_MECHANIC")) {
+            throw new ValidationException("You do not have permission");
+        }
         return repository.findAllByEmployeeId(employeeId).stream().map(this::buildResponse).toList();
+    }
+
+    public List<OperationOrderResponse> getListByStatusAndCustomerId(OperationOrderStatusType status, Integer customerId) {
+        List<OperationOrderEntity> response = repository.findAllByOrderStatusAndCustomerId(status, customerId);
+        for (OperationOrderEntity operationOrderEntity : response) {
+            validator.validForView(operationOrderEntity);
+        }
+        return response.stream().map(this::buildResponse).toList();
+    }
+
+    public List<OperationOrderResponse> getListByStatus(OperationOrderStatusType status) {
+        if (!SecurityContextAccessor.getRole().equals("ROLE_ADMIN") && !SecurityContextAccessor.getRole().equals("ROLE_MECHANIC")) {
+            throw new ValidationException("You do not have permission");
+        }
+        return repository.findAllByOrderStatus(status).stream().map(this::buildResponse).toList();
     }
 
     @Override
     public Integer create(OperationOrderView view) {
         OperationOrderEntity entity = new OperationOrderEntity();
-        merger.merge(entity, view);
+        merger.mergeCreate(entity, view);
         validator.validForCreate(entity);
         return repository.save(entity).getId();
     }

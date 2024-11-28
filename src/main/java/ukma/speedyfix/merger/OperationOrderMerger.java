@@ -22,7 +22,7 @@ public class OperationOrderMerger {
     private final CustomerRepository customerRepository;
     private final EmployeeRepository employeeRepository;
 
-    public void merge(OperationOrderEntity entity, OperationOrderView view) {
+    public void mergeCreate(OperationOrderEntity entity, OperationOrderView view) {
         entity.setStartDate(LocalDate.now());
         if (view.getOrderStatus() != null) {
             entity.setOrderStatus(view.getOrderStatus());

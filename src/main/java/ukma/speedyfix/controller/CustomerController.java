@@ -21,7 +21,7 @@ public class CustomerController {
     private final CustomerService customerService;
     private final UserService userService;
 
-    @PostMapping("/public/api/customer")
+    @PostMapping("/public/api/createCustomer")
     public ResponseEntity<Integer> createCustomer(@RequestBody UserEntity user) {
         log.info("Creating customer: {}", user);
         Integer userId = userService.create(user);
@@ -38,10 +38,10 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.getResponseById(id));
     }
 
-    @PutMapping("/auth/api/customer")
-        public ResponseEntity<Boolean> updateCustomer(@RequestBody CustomerView user) {
+    @PutMapping("/auth/api/customer/{id}")
+        public ResponseEntity<Boolean> updateCustomer(@PathVariable Integer id, @RequestBody UserEntity user) {
         log.info("Updating customer: {}", user);
-        return ResponseEntity.ok(customerService.update(user));
+        return ResponseEntity.ok(customerService.update(user, id));
     }
 
     @DeleteMapping("/auth/api/customer/{id}")

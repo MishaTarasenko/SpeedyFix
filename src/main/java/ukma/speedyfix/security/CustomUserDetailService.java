@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ukma.speedyfix.domain.entity.CustomerEntity;
 import ukma.speedyfix.domain.entity.EmployeeEntity;
+import ukma.speedyfix.domain.type.EmployeeType;
 import ukma.speedyfix.repositories.CustomerRepository;
 import ukma.speedyfix.repositories.EmployeeRepository;
 
@@ -27,11 +28,19 @@ public class CustomUserDetailService implements UserDetailsService {
         CustomerEntity customer = customerRepository.findByEmail(email).orElse(null);
 
         if (employee != null) {
-            return new User(
-                    employee.getUser().getEmail(),
-                    employee.getUser().getPassword(),
-                    Collections.singletonList(() -> "ROLE_" + "ADMIN")
-            );
+            if (employee.getType() == EmployeeType.ADMIN) {
+                return new User(
+                        employee.getUser().getEmail(),
+                        employee.getUser().getPassword(),
+                        Collections.singletonList(() -> "ROLE_" + "ADMIN")
+                );
+            } else {
+                return new User(
+                        employee.getUser().getEmail(),
+                        employee.getUser().getPassword(),
+                        Collections.singletonList(() -> "ROLE_" + "MECHANIC")
+                );
+            }
         } else if (customer != null) {
             return new User(
                     customer.getUser().getEmail(),
