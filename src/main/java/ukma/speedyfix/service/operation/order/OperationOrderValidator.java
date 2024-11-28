@@ -6,11 +6,22 @@ import ukma.speedyfix.exception.ValidationException;
 import ukma.speedyfix.security.SecurityContextAccessor;
 import ukma.speedyfix.service.BaseValidator;
 
+import java.time.LocalDate;
+
 @Component
 public class OperationOrderValidator extends BaseValidator<OperationOrderEntity> {
 
     public OperationOrderValidator() {
         super(OperationOrderEntity.class);
+    }
+
+    @Override
+    public void validForCreate(OperationOrderEntity entity) {
+        super.validForCreate(entity);
+
+        if (entity.getStartDate().isBefore(LocalDate.now())) {
+            throw new ValidationException("Start date must be from today or later");
+        }
     }
 
     @Override
