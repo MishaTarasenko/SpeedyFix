@@ -181,19 +181,38 @@ class OperationCRUDTest extends BaseTest {
                 .andExpect(status().is4xxClientError());
     }
 
-//
-//    @Test
-//    void allCanGetAllEmployees() throws Exception {
-//        mockMvc.perform(get("/public/api/employee")
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk());
-//    }
-//
-//    @Test
-//    void allCanGetEmployeeById() throws Exception {
-//        mockMvc.perform(get("/public/api/employee/" + admin.getId())
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk());
-//    }
-//
+
+    @Test
+    void allCanGetAllOperations() throws Exception {
+        OperationView operation = new OperationView(null, "Wash", "Wash your car", 19.99, Set.of(mechanic.getId()));
+
+        mockMvc.perform(post("/admin/api/operation")
+                        .header("Authorization", "Bearer " + loginLikeAdmin())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(operation)))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(get("/public/api/operation")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void allCanGetOperationById() throws Exception {
+        OperationView operation = new OperationView(null, "Wash", "Wash your car", 19.99, Set.of(mechanic.getId()));
+
+        MvcResult result = mockMvc.perform(post("/admin/api/operation")
+                        .header("Authorization", "Bearer " + loginLikeAdmin())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(operation)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String operationId = result.getResponse().getContentAsString();
+
+        mockMvc.perform(get("/public/api/operation/" + operationId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
 }
