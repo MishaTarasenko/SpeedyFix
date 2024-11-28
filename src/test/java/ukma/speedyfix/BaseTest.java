@@ -20,6 +20,7 @@ import ukma.speedyfix.domain.type.EmployeeType;
 import ukma.speedyfix.repositories.CustomerRepository;
 import ukma.speedyfix.repositories.EmployeeRepository;
 import ukma.speedyfix.repositories.UserRepository;
+import ukma.speedyfix.repositories.VehicleRepository;
 
 import java.util.ArrayList;
 
@@ -35,6 +36,7 @@ public class BaseTest {
     public final EmployeeRepository employeeRepository;
     public final CustomerRepository customerRepository;
     public final UserRepository userRepository;
+    public final VehicleRepository vehicleRepository;
     public final MockMvc mockMvc;
 
     public EmployeeEntity mechanic;
@@ -46,10 +48,11 @@ public class BaseTest {
 
     @Autowired
     public BaseTest(EmployeeRepository employeeRepository, CustomerRepository customerRepository,
-                            UserRepository userRepository, MockMvc mockMvc) {
+                            UserRepository userRepository, VehicleRepository vehicleRepository, MockMvc mockMvc) {
         this.employeeRepository = employeeRepository;
         this.customerRepository = customerRepository;
         this.userRepository = userRepository;
+        this.vehicleRepository = vehicleRepository;
         this.mockMvc = mockMvc;
     }
 
@@ -107,6 +110,7 @@ public class BaseTest {
 
     @AfterEach
     public void clear() {
+        vehicleRepository.deleteAll();
         employeeRepository.deleteAll();
         customerRepository.deleteAll();
         userRepository.deleteAll();

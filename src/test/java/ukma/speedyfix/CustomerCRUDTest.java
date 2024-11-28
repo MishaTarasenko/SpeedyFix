@@ -8,6 +8,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import ukma.speedyfix.repositories.CustomerRepository;
 import ukma.speedyfix.repositories.EmployeeRepository;
 import ukma.speedyfix.repositories.UserRepository;
+import ukma.speedyfix.repositories.VehicleRepository;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -15,8 +16,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class CustomerCRUDTest extends BaseTest {
 
     @Autowired
-    public CustomerCRUDTest(EmployeeRepository employeeRepository, CustomerRepository customerRepository, UserRepository userRepository, MockMvc mockMvc) {
-        super(employeeRepository, customerRepository, userRepository, mockMvc);
+    public CustomerCRUDTest(EmployeeRepository employeeRepository, CustomerRepository customerRepository,
+                            UserRepository userRepository, VehicleRepository vehicleRepository, MockMvc mockMvc) {
+        super(employeeRepository, customerRepository, userRepository, vehicleRepository, mockMvc);
     }
 
     @Test

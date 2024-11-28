@@ -10,15 +10,17 @@ import ukma.speedyfix.domain.view.EmployeeView;
 import ukma.speedyfix.repositories.CustomerRepository;
 import ukma.speedyfix.repositories.EmployeeRepository;
 import ukma.speedyfix.repositories.UserRepository;
+import ukma.speedyfix.repositories.VehicleRepository;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class EmployeeCRUDTest extends BaseTest{
+class EmployeeCRUDTest extends BaseTest{
 
     @Autowired
-    public EmployeeCRUDTest(EmployeeRepository employeeRepository, CustomerRepository customerRepository, UserRepository userRepository, MockMvc mockMvc) {
-        super(employeeRepository, customerRepository, userRepository, mockMvc);
+    public EmployeeCRUDTest(EmployeeRepository employeeRepository, CustomerRepository customerRepository,
+                            UserRepository userRepository, VehicleRepository vehicleRepository, MockMvc mockMvc) {
+        super(employeeRepository, customerRepository, userRepository, vehicleRepository, mockMvc);
     }
 
     @Test

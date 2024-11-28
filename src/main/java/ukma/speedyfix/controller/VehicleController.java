@@ -34,12 +34,12 @@ public class VehicleController {
         return ResponseEntity.ok(vehicleService.update(vehicle));
     }
 
-    @GetMapping("/auth/api/vehicle")
+    @GetMapping("/admin/api/vehicle")
     public ResponseEntity<List<VehicleResponse>> findAll() {
         return ResponseEntity.ok(vehicleService.getListResponse());
     }
 
-    @GetMapping(path = "/user/api/vehicle/{id}")
+    @GetMapping(path = "/auth/api/vehicle/{id}")
     public ResponseEntity<VehicleResponse> findById(@PathVariable("id") Integer id) {
         return ResponseEntity.ok(vehicleService.getResponseById(id));
     }

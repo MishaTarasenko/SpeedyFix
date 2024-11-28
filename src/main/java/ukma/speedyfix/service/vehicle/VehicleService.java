@@ -1,6 +1,5 @@
 package ukma.speedyfix.service.vehicle;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ukma.speedyfix.domain.entity.VehicleEntity;
@@ -30,14 +29,21 @@ public class VehicleService implements MyService<VehicleEntity, VehicleView,  In
     }
 
     public List<VehicleResponse> getListResponse() {
-        return repository.findAll().stream()
-                .map(this::buildResponse).toList();
+        List<VehicleEntity> response = repository.findAll();
+
+        for (VehicleEntity vehicle : response) {
+            validator.validForView(vehicle);
+        }
+
+        return response.stream().map(this::buildResponse).toList();
     }
 
     @Override
     public VehicleEntity getById(Integer id) {
-        return repository.findById(id)
+        VehicleEntity entity = repository.findById(id)
                 .orElseThrow(() -> new NoSuchEntityException("Vehicle with id: " + id + " not found!"));
+        validator.validForView(entity);
+        return entity;
     }
 
     @Override
@@ -53,7 +59,7 @@ public class VehicleService implements MyService<VehicleEntity, VehicleView,  In
     public boolean update(VehicleView view) {
         VehicleEntity entity = getById(view.getId());
         merger.mergeUpdate(entity, view);
-        validator.validForCreate(entity);
+        validator.validForUpdate(entity);
         repository.saveAndFlush(entity);
         return true;
     }
@@ -67,8 +73,13 @@ public class VehicleService implements MyService<VehicleEntity, VehicleView,  In
     }
 
     public List<VehicleResponse> getVehiclesByCustomerId(Integer customerId) {
-        return repository.findAllByOwner(customerService.getById(customerId)).stream()
-                .map(this::buildResponse).toList();
+        List<VehicleEntity> response = repository.findAllByOwner(customerService.getById(customerId));
+
+        for (VehicleEntity vehicle : response) {
+            validator.validForView(vehicle);
+        }
+
+        return response.stream().map(this::buildResponse).toList();
     }
 
     public VehicleResponse buildResponse(VehicleEntity entity) {
