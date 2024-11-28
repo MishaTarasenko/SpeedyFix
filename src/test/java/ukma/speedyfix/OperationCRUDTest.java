@@ -18,13 +18,15 @@ class OperationCRUDTest extends BaseTest {
     @Autowired
     public OperationCRUDTest(EmployeeRepository employeeRepository, CustomerRepository customerRepository,
                              UserRepository userRepository, VehicleRepository vehicleRepository,
-                             OperationRepository operationRepository, MockMvc mockMvc) {
-        super(employeeRepository, customerRepository, userRepository, vehicleRepository, operationRepository, mockMvc);
+                             OperationRepository operationRepository, OperationOrderRepository operationOrderRepository,
+                             MockMvc mockMvc) {
+        super(employeeRepository, customerRepository, userRepository, vehicleRepository,
+                operationRepository, operationOrderRepository, mockMvc);
     }
 
     @Test
     void adminCanCreateOperationTest() throws Exception {
-        OperationView operation = new OperationView(null, "Wash", "Wash your car", 19.99, Set.of(mechanic.getId()));
+        OperationView operation = getOperationView(mechanic.getId());
 
         mockMvc.perform(post("/admin/api/operation")
                         .header("Authorization", "Bearer " + loginLikeAdmin())
@@ -35,7 +37,7 @@ class OperationCRUDTest extends BaseTest {
 
     @Test
     void mechanicCantCreateOperationTest() throws Exception {
-        OperationView operation = new OperationView(null, "Wash", "Wash your car", 19.99, Set.of(mechanic.getId()));
+        OperationView operation = getOperationView(mechanic.getId());
 
         mockMvc.perform(post("/admin/api/operation")
                         .header("Authorization", "Bearer " + loginLikeMechanic())
@@ -46,7 +48,7 @@ class OperationCRUDTest extends BaseTest {
 
     @Test
     void customerCantCreateOperationTest() throws Exception {
-        OperationView operation = new OperationView(null, "Wash", "Wash your car", 19.99, Set.of(mechanic.getId()));
+        OperationView operation = getOperationView(mechanic.getId());
 
         mockMvc.perform(post("/admin/api/operation")
                         .header("Authorization", "Bearer " + loginLikeAnotherCustomer())
@@ -57,7 +59,7 @@ class OperationCRUDTest extends BaseTest {
 
     @Test
     void adminCanDeleteEmployeeTest() throws Exception {
-        OperationView operation = new OperationView(null, "Wash", "Wash your car", 19.99, Set.of(mechanic.getId()));
+        OperationView operation = getOperationView(mechanic.getId());
 
         MvcResult result = mockMvc.perform(post("/admin/api/operation")
                         .header("Authorization", "Bearer " + loginLikeAdmin())
@@ -76,7 +78,7 @@ class OperationCRUDTest extends BaseTest {
 
     @Test
     void mechanicCantDeleteOperationTest() throws Exception {
-        OperationView operation = new OperationView(null, "Wash", "Wash your car", 19.99, Set.of(mechanic.getId()));
+        OperationView operation = getOperationView(mechanic.getId());
 
         MvcResult result = mockMvc.perform(post("/admin/api/operation")
                         .header("Authorization", "Bearer " + loginLikeAdmin())
@@ -95,7 +97,7 @@ class OperationCRUDTest extends BaseTest {
 
     @Test
     void customerCantDeleteOperationTest() throws Exception {
-        OperationView operation = new OperationView(null, "Wash", "Wash your car", 19.99, Set.of(mechanic.getId()));
+        OperationView operation = getOperationView(mechanic.getId());
 
         MvcResult result = mockMvc.perform(post("/admin/api/operation")
                         .header("Authorization", "Bearer " + loginLikeAdmin())
@@ -114,7 +116,7 @@ class OperationCRUDTest extends BaseTest {
 
     @Test
     void adminCanUpdateEmployeeTest() throws Exception {
-        OperationView operation = new OperationView(null, "Wash", "Wash your car", 19.99, Set.of(mechanic.getId()));
+        OperationView operation = getOperationView(mechanic.getId());
 
         MvcResult result = mockMvc.perform(post("/admin/api/operation")
                         .header("Authorization", "Bearer " + loginLikeAdmin())
@@ -137,7 +139,7 @@ class OperationCRUDTest extends BaseTest {
 
     @Test
     void mechanicCantUpdateOperationTest() throws Exception {
-        OperationView operation = new OperationView(null, "Wash", "Wash your car", 19.99, Set.of(mechanic.getId()));
+        OperationView operation = getOperationView(mechanic.getId());
 
         MvcResult result = mockMvc.perform(post("/admin/api/operation")
                         .header("Authorization", "Bearer " + loginLikeAdmin())
@@ -160,7 +162,7 @@ class OperationCRUDTest extends BaseTest {
 
     @Test
     void customerCantUpdateOperationTest() throws Exception {
-        OperationView operation = new OperationView(null, "Wash", "Wash your car", 19.99, Set.of(mechanic.getId()));
+        OperationView operation = getOperationView(mechanic.getId());
 
         MvcResult result = mockMvc.perform(post("/admin/api/operation")
                         .header("Authorization", "Bearer " + loginLikeAdmin())
@@ -184,7 +186,7 @@ class OperationCRUDTest extends BaseTest {
 
     @Test
     void allCanGetAllOperations() throws Exception {
-        OperationView operation = new OperationView(null, "Wash", "Wash your car", 19.99, Set.of(mechanic.getId()));
+        OperationView operation = getOperationView(mechanic.getId());
 
         mockMvc.perform(post("/admin/api/operation")
                         .header("Authorization", "Bearer " + loginLikeAdmin())
@@ -199,7 +201,7 @@ class OperationCRUDTest extends BaseTest {
 
     @Test
     void allCanGetOperationById() throws Exception {
-        OperationView operation = new OperationView(null, "Wash", "Wash your car", 19.99, Set.of(mechanic.getId()));
+        OperationView operation = getOperationView(mechanic.getId());
 
         MvcResult result = mockMvc.perform(post("/admin/api/operation")
                         .header("Authorization", "Bearer " + loginLikeAdmin())
@@ -215,4 +217,12 @@ class OperationCRUDTest extends BaseTest {
                 .andExpect(status().isOk());
     }
 
+    private OperationView getOperationView(Integer employeeId) {
+        return OperationView.builder()
+                .name("Wash")
+                .description("Wash your car")
+                .price(19.99)
+                .employeeIds(Set.of(employeeId))
+                .build();
+    }
 }

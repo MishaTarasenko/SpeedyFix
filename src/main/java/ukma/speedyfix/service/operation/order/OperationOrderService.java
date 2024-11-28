@@ -60,7 +60,7 @@ public class OperationOrderService implements MyService<OperationOrderEntity, Op
     }
 
     public List<OperationOrderResponse> getListByEmployeeId(Integer employeeId) {
-        if (!SecurityContextAccessor.getRole().equals("ROLE_ADMIN") || !SecurityContextAccessor.getRole().equals("ROLE_MECHANIC")) {
+        if (!SecurityContextAccessor.getRole().equals("ROLE_ADMIN") && !SecurityContextAccessor.getRole().equals("ROLE_MECHANIC")) {
             throw new ValidationException("You do not have permission");
         }
         return repository.findAllByEmployeeId(employeeId).stream().map(this::buildResponse).toList();

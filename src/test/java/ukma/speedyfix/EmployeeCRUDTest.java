@@ -17,8 +17,10 @@ class EmployeeCRUDTest extends BaseTest{
     @Autowired
     public EmployeeCRUDTest(EmployeeRepository employeeRepository, CustomerRepository customerRepository,
                             UserRepository userRepository, VehicleRepository vehicleRepository,
-                            OperationRepository operationRepository, MockMvc mockMvc) {
-        super(employeeRepository, customerRepository, userRepository, vehicleRepository, operationRepository, mockMvc);
+                            OperationRepository operationRepository, OperationOrderRepository operationOrderRepository,
+                            MockMvc mockMvc) {
+        super(employeeRepository, customerRepository, userRepository, vehicleRepository,
+                operationRepository, operationOrderRepository, mockMvc);
     }
 
     @Test

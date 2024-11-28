@@ -1,6 +1,8 @@
 package ukma.speedyfix;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,6 @@ import ukma.speedyfix.domain.entity.CustomerEntity;
 import ukma.speedyfix.domain.entity.EmployeeEntity;
 import ukma.speedyfix.domain.entity.UserEntity;
 import ukma.speedyfix.domain.response.JwtResponse;
-import ukma.speedyfix.domain.response.OperationResponse;
 import ukma.speedyfix.domain.type.EmployeeType;
 import ukma.speedyfix.repositories.*;
 
@@ -36,24 +37,29 @@ public class BaseTest {
     public final UserRepository userRepository;
     public final VehicleRepository vehicleRepository;
     public final OperationRepository operationRepository;
+    public final OperationOrderRepository operationOrderRepository;
     public final MockMvc mockMvc;
 
     public EmployeeEntity mechanic;
     public EmployeeEntity admin;
     public CustomerEntity customer;
 
-    public ObjectMapper objectMapper = new ObjectMapper();
+    public ObjectMapper objectMapper = new ObjectMapper()
+            .registerModule(new JavaTimeModule())
+            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
     public BaseTest(EmployeeRepository employeeRepository, CustomerRepository customerRepository,
                     UserRepository userRepository, VehicleRepository vehicleRepository,
-                    OperationRepository operationRepository, MockMvc mockMvc) {
+                    OperationRepository operationRepository, OperationOrderRepository operationOrderRepository,
+                    MockMvc mockMvc) {
         this.employeeRepository = employeeRepository;
         this.customerRepository = customerRepository;
         this.userRepository = userRepository;
         this.vehicleRepository = vehicleRepository;
         this.operationRepository = operationRepository;
+        this.operationOrderRepository = operationOrderRepository;
         this.mockMvc = mockMvc;
     }
 
@@ -111,6 +117,7 @@ public class BaseTest {
 
     @AfterEach
     public void clear() {
+        operationOrderRepository.deleteAll();
         operationRepository.deleteAll();
         vehicleRepository.deleteAll();
         employeeRepository.deleteAll();

@@ -37,7 +37,8 @@ public class OperationOrderValidator extends BaseValidator<OperationOrderEntity>
     public void validForUpdate(OperationOrderEntity entity) {
         super.validForUpdate(entity);
 
-        if (!hasPermissionToEdit(entity.getCustomer().getUser().getEmail())) {
+        if (!hasPermissionToEdit(entity.getCustomer().getUser().getEmail())
+                && !SecurityContextAccessor.getRole().equals("ROLE_MECHANIC")) {
             throw new ValidationException("You do not have permission");
         }
     }
