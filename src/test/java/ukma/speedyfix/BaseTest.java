@@ -16,11 +16,9 @@ import ukma.speedyfix.domain.entity.CustomerEntity;
 import ukma.speedyfix.domain.entity.EmployeeEntity;
 import ukma.speedyfix.domain.entity.UserEntity;
 import ukma.speedyfix.domain.response.JwtResponse;
+import ukma.speedyfix.domain.response.OperationResponse;
 import ukma.speedyfix.domain.type.EmployeeType;
-import ukma.speedyfix.repositories.CustomerRepository;
-import ukma.speedyfix.repositories.EmployeeRepository;
-import ukma.speedyfix.repositories.UserRepository;
-import ukma.speedyfix.repositories.VehicleRepository;
+import ukma.speedyfix.repositories.*;
 
 import java.util.ArrayList;
 
@@ -37,6 +35,7 @@ public class BaseTest {
     public final CustomerRepository customerRepository;
     public final UserRepository userRepository;
     public final VehicleRepository vehicleRepository;
+    public final OperationRepository operationRepository;
     public final MockMvc mockMvc;
 
     public EmployeeEntity mechanic;
@@ -48,11 +47,13 @@ public class BaseTest {
 
     @Autowired
     public BaseTest(EmployeeRepository employeeRepository, CustomerRepository customerRepository,
-                            UserRepository userRepository, VehicleRepository vehicleRepository, MockMvc mockMvc) {
+                    UserRepository userRepository, VehicleRepository vehicleRepository,
+                    OperationRepository operationRepository, MockMvc mockMvc) {
         this.employeeRepository = employeeRepository;
         this.customerRepository = customerRepository;
         this.userRepository = userRepository;
         this.vehicleRepository = vehicleRepository;
+        this.operationRepository = operationRepository;
         this.mockMvc = mockMvc;
     }
 

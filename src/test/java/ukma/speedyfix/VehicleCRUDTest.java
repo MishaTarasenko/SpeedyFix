@@ -8,10 +8,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import ukma.speedyfix.domain.type.EngineType;
 import ukma.speedyfix.domain.type.TransmissionType;
 import ukma.speedyfix.domain.view.VehicleView;
-import ukma.speedyfix.repositories.CustomerRepository;
-import ukma.speedyfix.repositories.EmployeeRepository;
-import ukma.speedyfix.repositories.UserRepository;
-import ukma.speedyfix.repositories.VehicleRepository;
+import ukma.speedyfix.repositories.*;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -20,8 +17,9 @@ class VehicleCRUDTest extends BaseTest {
 
     @Autowired
     public VehicleCRUDTest(EmployeeRepository employeeRepository, CustomerRepository customerRepository,
-                           UserRepository userRepository, VehicleRepository vehicleRepository, MockMvc mockMvc) {
-        super(employeeRepository, customerRepository, userRepository, vehicleRepository, mockMvc);
+                           UserRepository userRepository, VehicleRepository vehicleRepository,
+                           OperationRepository operationRepository, MockMvc mockMvc) {
+        super(employeeRepository, customerRepository, userRepository, vehicleRepository, operationRepository, mockMvc);
     }
 
     @Test

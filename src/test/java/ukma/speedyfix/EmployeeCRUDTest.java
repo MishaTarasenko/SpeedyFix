@@ -7,10 +7,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import ukma.speedyfix.domain.EmployeeCreationWrapper;
 import ukma.speedyfix.domain.entity.UserEntity;
 import ukma.speedyfix.domain.view.EmployeeView;
-import ukma.speedyfix.repositories.CustomerRepository;
-import ukma.speedyfix.repositories.EmployeeRepository;
-import ukma.speedyfix.repositories.UserRepository;
-import ukma.speedyfix.repositories.VehicleRepository;
+import ukma.speedyfix.repositories.*;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -19,8 +16,9 @@ class EmployeeCRUDTest extends BaseTest{
 
     @Autowired
     public EmployeeCRUDTest(EmployeeRepository employeeRepository, CustomerRepository customerRepository,
-                            UserRepository userRepository, VehicleRepository vehicleRepository, MockMvc mockMvc) {
-        super(employeeRepository, customerRepository, userRepository, vehicleRepository, mockMvc);
+                            UserRepository userRepository, VehicleRepository vehicleRepository,
+                            OperationRepository operationRepository, MockMvc mockMvc) {
+        super(employeeRepository, customerRepository, userRepository, vehicleRepository, operationRepository, mockMvc);
     }
 
     @Test
