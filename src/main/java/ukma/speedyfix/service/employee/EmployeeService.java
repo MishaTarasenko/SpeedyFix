@@ -50,7 +50,7 @@ public class EmployeeService implements MyService<EmployeeEntity, EmployeeView, 
     public boolean update(EmployeeView view) {
         EmployeeEntity entity = getById(view.getId());
         merger.mergeUpdate(entity, view);
-        validator.validForCreate(entity);
+        validator.validForUpdate(entity);
         repository.saveAndFlush(entity);
         return true;
 
